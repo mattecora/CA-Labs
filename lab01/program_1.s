@@ -13,6 +13,9 @@
 ; - The maximum is compared with a value from the vector, setting a register if lower
 ; - If the register value is set, the maximum is updated
 
+; Optimizations:
+; - Reordering of the r2 update and the movn operation to produce less stalls due to data hazards
+
         .data
 
 vector: .word   18,     0,      93,     82,     7,      -97,    -64,    38,     -21,    -4
@@ -36,9 +39,9 @@ main:   daddi   r2, r0, 0                       ; r2 = 0
 loop:   ld      r1, vector(r2)                  ; r1 = mem[vector + r2]
         
         slt     r5, r4, r1                      ; set r5 if r4 < r1
-        movn    r4, r1, r5                      ; set the new max in r4 if r5 != 0
-
         daddi   r2, r2, 8                       ; r2 = r2 + 8
+        
+        movn    r4, r1, r5                      ; set the new max in r4 if r5 != 0
         bne     r2, r3, loop                    ; jump if r2 != r3
 
         sd      r4, result(r0)                  ; memory[result] = r4
