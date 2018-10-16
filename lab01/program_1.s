@@ -14,7 +14,7 @@
 ; - If the register value is set, the maximum is updated
 
 ; Optimizations:
-; - Reordering of the r2 update and the movn operation to produce less stalls due to data hazards
+; - Moving of the r2 update instruction between the ld and the slt to produce less stalls due to data hazards
 
         .data
 
@@ -37,10 +37,9 @@ main:   daddi   r2, r0, 0                       ; r2 = 0
         daddi   r4, r0, 0xffffffffffffffff      ; r4 = int_min
 
 loop:   ld      r1, vector(r2)                  ; r1 = mem[vector + r2]
-        
-        slt     r5, r4, r1                      ; set r5 if r4 < r1
         daddi   r2, r2, 8                       ; r2 = r2 + 8
         
+        slt     r5, r4, r1                      ; set r5 if r4 < r1
         movn    r4, r1, r5                      ; set the new max in r4 if r5 != 0
         bne     r2, r3, loop                    ; jump if r2 != r3
 
