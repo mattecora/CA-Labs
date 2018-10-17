@@ -14,6 +14,7 @@
 ; - If the register value is set, the maximum is updated
 
 ; Optimizations:
+; - Initial setup of r2 before the first load (one less stall at the first load in the loop)
 ; - Moving of the r2 update instruction between the ld and the slt to produce less stalls due to data hazards
 
         .data
@@ -32,9 +33,9 @@ result: .space  8
 
         .text
 
-main:   ld      r4, vector(r0)                  ; r4 = vector[0]
-        daddi   r2, r0, 8                       ; r2 = 8
+main:   daddi   r2, r0, 8                       ; r2 = 8
         daddi   r3, r0, 800                     ; r3 = 800
+        ld      r4, vector(r0)                  ; r4 = vector[0]
 
 loop:   ld      r1, vector(r2)                  ; r1 = vector[r2]
         daddi   r2, r2, 8                       ; r2 = r2 + 8
