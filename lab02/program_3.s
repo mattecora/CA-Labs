@@ -20,6 +20,7 @@
 ; - The operation is repeated for every element in the vector (loop1)
 
 ; Optimizations:
+; - Vector scans from the end to the top, with loop decrement at the beginning
 
         .data
 
@@ -39,7 +40,7 @@ vector: .byte   0x1c, 0x1b, 0x78, 0x76, 0x15, 0x33, 0x0f, 0x40
 
         .text
 
-main:   daddi  r1, r0, 100              ; r1 = 100
+main:   daddi   r1, r0, 100             ; r1 = 100
 
 loop1:  daddi   r1, r1, -1              ; decrement r1
         lbu     r3, vector(r1)          ; load value
@@ -48,10 +49,10 @@ loop1:  daddi   r1, r1, -1              ; decrement r1
         daddi   r4, r3, 0               ; r4 = r3
         daddi   r6, r0, 0               ; r6 = 0
 
-loop2:  andi    r5, r4, 0x01            ; r5 = r4 and 00000001
+loop2:  daddi   r2, r2, -1              ; decrement r2
+        andi    r5, r4, 0x01            ; r5 = r4 and 00000001
         xor     r6, r6, r5              ; r6 = r6 xor r5
         dsrl    r4, r4, 1               ; shift by 1
-        daddi   r2, r2, -1              ; decrement r2
         bnez    r2, loop2               ; loop 2
 
         beqz    r6, even                ; branch for even parity
