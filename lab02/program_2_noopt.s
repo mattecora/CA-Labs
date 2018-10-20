@@ -1,5 +1,5 @@
-; program_2.s
-; Performing some computations on FP values
+; program_2_noopt.s
+; Performing some computations on FP values (no optimizations)
 
 ; Used registers:
 ; - r1: target value for the loop
@@ -14,9 +14,7 @@
 ; - Loop for 30 times
 
 ; Optimizations:
-; - Rearranging of the load instructions before the respective operations
-; - Reordering of the div before the mul to reduce total clock cycles
-; - Rearranging of the store instructions to store before the data available before
+; - No optimizations
 
         .data
 
@@ -45,20 +43,19 @@ v7:     .space 240
 main:   daddui  r1, r0, 240             ; load r1
         daddui  r2, r0, 0               ; load r2
 
-loop:   l.d     f2, v2(r2)              ; load f2
+loop:   l.d     f1, v1(r2)              ; load f1
+        l.d     f2, v2(r2)              ; load f2
         l.d     f3, v3(r2)              ; load f3
-        div.d   f6, f2, f3              ; f6 = f2 / f3
-        
-        l.d     f1, v1(r2)              ; load f1
-        mul.d   f5, f1, f2              ; f5 = f1 * f2
-
         l.d     f4, v4(r2)              ; load f4
+
+        mul.d   f5, f1, f2              ; f5 = f1 * f2
+        div.d   f6, f2, f3              ; f6 = f2 / f3
         add.d   f7, f1, f4              ; f7 = f1 + f4
 
-        s.d     f7, v7(r2)              ; store f7
         s.d     f5, v5(r2)              ; store f5
         s.d     f6, v6(r2)              ; store f6
-        
+        s.d     f7, v7(r2)              ; store f7
+
         daddui  r2, r2, 8               ; increment r2
         bne     r1, r2, loop            ; loop if r1 != r2
 
