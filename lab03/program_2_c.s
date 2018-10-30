@@ -1,6 +1,3 @@
-; program_2_c.s
-; Performing some computations on FP values with data dependencies
-
 ; Used registers:
 ; - r1, r2, r3: loop accumulators (starting from the end)
 ; - f1, f2, f6, f7, f11, f12: temporary storage for operands from v1, v2
@@ -54,23 +51,23 @@ loop:   daddi   r1, r1, -24             ; r1 update
         l.d     f11, v1(r3)             ; load f11
         l.d     f12, v2(r3)             ; load f12
 
-        mul.d   f13, f11, f12           ; f13 = f11 * f12 <- RAW
+        mul.d   f13, f11, f12           ; f13 = f11 * f12 (RAW)
         
         div.d   f4, f3, f2              ; f4 = f3 / f2
         s.d     f3, v3(r1)              ; store f3
-        add.d   f5, f4, f2              ; f5 = f4 + f2
 
         div.d   f9, f8, f7              ; f9 = f8 / f7
         s.d     f8, v3(r2)              ; store f8
+        add.d   f5, f4, f2              ; f5 = f4 + f2
         s.d     f4, v4(r1)              ; store f4
-        add.d   f10, f9, f7             ; f10 = f9 + f7
 
         div.d   f14, f13, f12           ; f14 = f13 / f12
         s.d     f13, v3(r3)             ; store f13
+        add.d   f10, f9, f7             ; f10 = f9 + f7
         s.d     f9, v4(r2)              ; store f9
-        add.d   f15, f14, f17           ; f15 = f14 + f12
         
         s.d     f5, v5(r1)              ; store f5
+        add.d   f15, f14, f17           ; f15 = f14 + f12
         s.d     f10, v5(r2)             ; store f10
         
         s.d     f14, v4(r3)             ; store f14
@@ -80,5 +77,4 @@ loop:   daddi   r1, r1, -24             ; r1 update
 
         halt
 
-; 557 cycles, 360 RAW, 20 struct
-; 538 cycles, 350 RAW, 20 struct
+; 557 cycles, 140 RAW, 200 struct
