@@ -15,6 +15,7 @@
 ; Optimizations:
 ; - Loop from the end
 ; - Avoid useless computations
+; - Move a store after the branch (suitable for branch delay)
 
         .data
 
@@ -45,10 +46,10 @@ loop:   daddi   r1, r1, -8              ; decrement r1
         add.d   f4, f1, f2              ; f5 = f1 + f2
 
         s.d     f4, v5(r1)              ; store v5
-        s.d     f3, v3(r1)              ; store v3
 
         bnez    r1, loop                ; loop if r1 != 0
+        s.d     f3, v3(r1)              ; store v3
 
         halt
 
-; 455 cycles, 90 RAW, 60 struct
+; 396 cycles, 60 RAW, 60 struct

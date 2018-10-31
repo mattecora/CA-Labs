@@ -38,46 +38,40 @@ main:   daddi   r1, r0, 240             ; load r1
         daddi   r3, r0, 256             ; load r3
 
 loop:   daddi   r1, r1, -24             ; r1 update
-        
         l.d     f1, v1(r1)              ; load f1
         l.d     f2, v2(r1)              ; load f2
 
         daddi   r2, r2, -24             ; r2 update
-        mul.d   f3, f1, f2              ; f3 = f1 * f2
-        
         l.d     f6, v1(r2)              ; load f6
         l.d     f7, v2(r2)              ; load f7
 
         daddi   r3, r3, -24             ; r3 update
-        mul.d   f8, f6, f7              ; f8 = f6 * f7
-
         l.d     f11, v1(r3)             ; load f11
         l.d     f12, v2(r3)             ; load f12
 
-        mul.d   f13, f11, f12           ; f13 = f11 * f12 (RAW)
+        mul.d   f3, f1, f2              ; f3 = f1 * f2
+        add.d   f4, f1, f2              ; f4 = f1 + f2
+        s.d     f1, v4(r1)              ; store v4(1)
+        s.d     f6, v4(r2)              ; store v4(2)
         
-        div.d   f4, f3, f2              ; f4 = f3 / f2
-        s.d     f3, v3(r1)              ; store f3
+        mul.d   f8, f6, f7              ; f8 = f6 * f7
+        add.d   f9, f6, f7              ; f9 = f6 + f7
+        s.d     f11, v4(r3)             ; store v4(3)
+        
+        add.d   f14, f11, f12           ; f14 = f11 + f12
+        mul.d   f13, f11, f12           ; f13 = f11 * f12
+        
+        s.d     f4, v5(r1)              ; store v5(1)
+        s.d     f9, v5(r2)              ; store v5(2)
 
-        div.d   f9, f8, f7              ; f9 = f8 / f7
-        s.d     f8, v3(r2)              ; store f8
-        add.d   f5, f4, f2              ; f5 = f4 + f2
-        s.d     f4, v4(r1)              ; store f4
+        s.d     f3, v3(r1)              ; store v3(1)
+        s.d     f8, v3(r2)              ; store v3(2)
 
-        div.d   f14, f13, f12           ; f14 = f13 / f12
-        s.d     f13, v3(r3)             ; store f13
-        add.d   f10, f9, f7             ; f10 = f9 + f7
-        s.d     f9, v4(r2)              ; store f9
-        
-        s.d     f5, v5(r1)              ; store f5
-        add.d   f15, f14, f17           ; f15 = f14 + f12
-        s.d     f10, v5(r2)             ; store f10
-        
-        s.d     f14, v4(r3)             ; store f14
-        s.d     f15, v5(r3)             ; store f15
+        s.d     f14, v5(r3)             ; store v5(3)
+        s.d     f13, v3(r3)             ; store v3(3)
         
         bnez    r1, loop                ; loop if r1 != r2
 
         halt
 
-; 557 cycles, 140 RAW, 200 struct
+; 297 cycles, 0 RAW, 30 struct
