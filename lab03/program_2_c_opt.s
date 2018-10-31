@@ -49,21 +49,21 @@ loop:   daddi   r1, r1, -24             ; r1 update
         l.d     f11, v1(r3)             ; load f11
         l.d     f12, v2(r3)             ; load f12
 
-        mul.d   f3, f1, f2              ; f3 = f1 * f2
         add.d   f4, f1, f2              ; f4 = f1 + f2
+        mul.d   f3, f1, f2              ; f3 = f1 * f2
         s.d     f1, v4(r1)              ; store v4(1)
+        
+        add.d   f9, f6, f7              ; f9 = f6 + f7
         s.d     f6, v4(r2)              ; store v4(2)
+        s.d     f11, v4(r3)             ; store v4(3)
         
         mul.d   f8, f6, f7              ; f8 = f6 * f7
-        add.d   f9, f6, f7              ; f9 = f6 + f7
-        s.d     f11, v4(r3)             ; store v4(3)
+        s.d     f4, v5(r1)              ; store v5(1)
         
         add.d   f14, f11, f12           ; f14 = f11 + f12
         mul.d   f13, f11, f12           ; f13 = f11 * f12
-        
-        s.d     f4, v5(r1)              ; store v5(1)
         s.d     f9, v5(r2)              ; store v5(2)
-
+        
         s.d     f3, v3(r1)              ; store v3(1)
         s.d     f8, v3(r2)              ; store v3(2)
 
@@ -74,4 +74,5 @@ loop:   daddi   r1, r1, -24             ; r1 update
 
         halt
 
-; 297 cycles, 0 RAW, 30 struct
+; standard: 297 cycles, 0 RAW, 30 struct
+; branch delay: 288 cycles, 0 RAW, 30 struct

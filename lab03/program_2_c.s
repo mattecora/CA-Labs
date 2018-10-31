@@ -80,4 +80,5 @@ loop:   daddi   r1, r1, -24             ; r1 update
 
         halt
 
-; 557 cycles, 140 RAW, 200 struct
+; standard: 557 cycles, 140 RAW, 200 struct
+; branch delay: 538 cycles, 130 RAW, 200 struct
