@@ -1,11 +1,11 @@
-compiler_folder="gem5_compiler"
+# path to the gem5 folder
 gem5_folder="gem5"
 
-file_name=$1	# without extension
-cpu_arch=$2 	# possible values: AtomicSimpleCPU, TimingSimpleCPU, MinorCPU, DerivO3CPU
+# file name without extension
+file_name=$1
 
-# compile file
-# $compiler_folder/alphaev67-unknown-linux-gnu/bin/alphaev67-unknown-linux-gnu-gcc -static -o $file_name $file_name.c
+# cpu architecture to use - possible values: AtomicSimpleCPU, TimingSimpleCPU, MinorCPU, DerivO3CPU
+cpu_arch=$2
 
 # run gem5
 $gem5_folder/build/ALPHA/gem5.opt $gem5_folder/configs/example/se.py --cpu-type=$cpu_arch --caches -c $file_name

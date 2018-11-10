@@ -14,7 +14,7 @@ int main(void)
   struct int_sqrt q;
   long n = 0;
 
-  /* solve soem cubic functions */
+  /* solve some cubic functions */
   printf("********* CUBIC FUNCTIONS ***********\n");
   /* should get 3 solutions: 2, 6 & 2.5   */
   SolveCubic(a1, b1, c1, d1, &solutions, x);  
