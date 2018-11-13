@@ -10,8 +10,9 @@ int main(void)
   double  a3 = 1.0, b3 = -3.5, c3 = 22.0, d3 = -31.0;
   double  a4 = 1.0, b4 = -13.7, c4 = 1.0, d4 = -35.0;
   double  x[3];
-  double X;
+  double  X;
   int     solutions;
+  
   int i;
   unsigned long l = 0x3fed0169L;
   struct int_sqrt q;
@@ -53,14 +54,14 @@ int main(void)
     for(b1=10;b1>5;b1--) {
       //for(c1=5;c1<15;c1+=0.5) {
       for(c1=5;c1<10;c1+=0.5) {
-	//for(d1=-1;d1>-11;d1--) {
+	      //for(d1=-1;d1>-11;d1--) {
         for(d1=-1;d1>-6;d1--) {
-	  SolveCubic(a1, b1, c1, d1, &solutions, x);  
-	  printf("Solutions [%f,%f,%f,%f]:",a1,b1,c1,d1);
-	  for(i=0;i<solutions;i++)
-	    printf(" %f",x[i]);
-	  printf("\n");
-	}
+          SolveCubic(a1, b1, c1, d1, &solutions, x);  
+          printf("Solutions [%f,%f,%f,%f]:",a1,b1,c1,d1);
+          for(i=0;i<solutions;i++)
+            printf(" %f",x[i]);
+          printf("\n");
+        }
       }
     }
   }
@@ -68,16 +69,15 @@ int main(void)
   printf("********* INTEGER SQR ROOTS ***********\n");
   /* perform some integer square roots */
   for (i = 0; i < 1001; ++i)
-    {
-      usqrt(i, &q);
-      // remainder differs on some machines
-      // printf("sqrt(%3d) = %2d, remainder = %2d\n",
-      printf("sqrt(%3d) = %2d\n", i, q.sqrt);
-    }
+  {
+    usqrt(i, &q);
+    // remainder differs on some machines
+    // printf("sqrt(%3d) = %2d, remainder = %2d\n",
+    printf("sqrt(%3d) = %2d\n", i, q.sqrt);
+  }
   usqrt(l, &q);
   //printf("\nsqrt(%lX) = %X, remainder = %X\n", l, q.sqrt, q.frac);
   printf("\nsqrt(%lX) = %X\n", l, q.sqrt);
-
 
   printf("********* ANGLE CONVERSION ***********\n");
   /* convert some rads to degrees */
@@ -85,8 +85,7 @@ int main(void)
     printf("%3.0f degrees = %.12f radians\n", X, deg2rad(X));
   puts("");
   for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 180))
-    printf("%.12f radians = %3.0f degrees\n", X, rad2deg(X));
-  
+    printf("%.12f radians = %3.0f degrees\n", X, rad2deg(X));  
   
   return 0;
 }

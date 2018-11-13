@@ -7,8 +7,9 @@ int main(void)
 {
   double  a1 = 1.0, b1 = -10.5, c1 = 32.0, d1 = -30.0;
   double  x[3];
-  double X;
+  double  X;
   int     solutions;
+  
   int i;
   unsigned long l = 0x3fed0169L;
   struct int_sqrt q;
@@ -77,47 +78,43 @@ int main(void)
   for(a1=1;a1<10;a1+=1) {
     for(b1=10;b1>0;b1-=.25) {
       for(c1=5;c1<15;c1+=0.61) {
-	   for(d1=-1;d1>-5;d1-=.451) {
-		SolveCubic(a1, b1, c1, d1, &solutions, x);  
-		printf("Solutions:");
-		for(i=0;i<solutions;i++)
-		  printf(" %f",x[i]);
-		printf("\n");
-	   }
+        for(d1=-1;d1>-5;d1-=.451) {
+          SolveCubic(a1, b1, c1, d1, &solutions, x);  
+          printf("Solutions:");
+          for(i=0;i<solutions;i++)
+            printf(" %f",x[i]);
+          printf("\n");
+        }
       }
     }
   }
 
-
   printf("********* INTEGER SQR ROOTS ***********\n");
   /* perform some integer square roots */
   for (i = 0; i < 100000; i+=2)
-    {
-      usqrt(i, &q);
-			// remainder differs on some machines
-     // printf("sqrt(%3d) = %2d, remainder = %2d\n",
-     printf("sqrt(%3d) = %2d\n",
-	     i, q.sqrt);
-    }
+  {
+    usqrt(i, &q);
+    // remainder differs on some machines
+    // printf("sqrt(%3d) = %2d, remainder = %2d\n",
+    printf("sqrt(%3d) = %2d\n", i, q.sqrt);
+  }
   printf("\n");
   for (l = 0x3fed0169L; l < 0x3fed4169L; l++)
-    {
-	 usqrt(l, &q);
-	 //printf("\nsqrt(%lX) = %X, remainder = %X\n", l, q.sqrt, q.frac);
-	 printf("sqrt(%lX) = %X\n", l, q.sqrt);
-    }
-
+  {
+    usqrt(l, &q);
+    //printf("\nsqrt(%lX) = %X, remainder = %X\n", l, q.sqrt, q.frac);
+    printf("sqrt(%lX) = %X\n", l, q.sqrt);
+  }
 
   printf("********* ANGLE CONVERSION ***********\n");
   /* convert some rads to degrees */
-/*   for (X = 0.0; X <= 360.0; X += 1.0) */
+  /*   for (X = 0.0; X <= 360.0; X += 1.0) */
   for (X = 0.0; X <= 360.0; X += .001)
     printf("%3.0f degrees = %.12f radians\n", X, deg2rad(X));
   puts("");
-/*   for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 180)) */
+  /*   for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 180)) */
   for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 5760))
     printf("%.12f radians = %3.0f degrees\n", X, rad2deg(X));
-  
   
   return 0;
 }
