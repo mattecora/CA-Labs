@@ -2,9 +2,9 @@ gem5 Simulator System.  http://gem5.org
 gem5 is copyrighted software; use the --copyright option for details.
 
 gem5 compiled Nov  8 2018 11:09:10
-gem5 started Nov  9 2018 09:38:30
-gem5 executing on debian-virtual, pid 4990
-command line: gem5/build/ALPHA/gem5.opt gem5/configs/example/se.py --cpu-type=TimingSimpleCPU --caches -c automotive/basicmath/basicmath_small
+gem5 started Nov 14 2018 15:40:13
+gem5 executing on debian-virtual, pid 3060
+command line: gem5/build/ALPHA/gem5.opt gem5/configs/example/se.py --cpu-type=TimingSimpleCPU -c automotive/basicmath/basicmath_small
 
 Global frequency set at 1000000000000 ticks per second
 **** REAL SIMULATION ****
@@ -2991,16 +2991,16 @@ sqrt(3FED0169) = 7FED0000
 6.248278722140 radians = 358 degrees
 6.265732014660 radians = 359 degrees
 6.283185307180 radians = 360 degrees
-Exiting @ tick 52592929000 because exiting with last active thread context
+Exiting @ tick 2360234838000 because exiting with last active thread context
 
 Statistics:
-Ticks:                    52592929000
+Ticks:                    2360234838000
 Clock domain:             500
-Clock cycles:             105185858
+Clock cycles:             4720469676
 Simulated instructions:   34195483
 CPI:                      
 Committed instructions:   34195483
-Host seconds:             61.98
+Host seconds:             222.52
 Predicted branches:       
 Incorrect predictions:    
 Misprediction ratio:      

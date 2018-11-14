@@ -2,8 +2,8 @@ gem5 Simulator System.  http://gem5.org
 gem5 is copyrighted software; use the --copyright option for details.
 
 gem5 compiled Nov  8 2018 11:09:10
-gem5 started Nov  9 2018 09:39:51
-gem5 executing on debian-virtual, pid 5079
+gem5 started Nov 14 2018 15:44:20
+gem5 executing on debian-virtual, pid 3217
 command line: gem5/build/ALPHA/gem5.opt gem5/configs/example/se.py --cpu-type=MinorCPU --caches -c automotive/basicmath/basicmath_small
 
 Global frequency set at 1000000000000 ticks per second
@@ -3000,7 +3000,7 @@ Clock cycles:             78657813
 Simulated instructions:   34195509
 CPI:                      2.300238
 Committed instructions:   34195509
-Host seconds:             150.28
+Host seconds:             114.55
 Predicted branches:       3804956
 Incorrect predictions:    165851
 Misprediction ratio:      4.35800

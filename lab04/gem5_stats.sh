@@ -8,7 +8,11 @@ file_name=$1
 cpu_arch=$2
 
 # run gem5
-$gem5_folder/build/ALPHA/gem5.opt $gem5_folder/configs/example/se.py --cpu-type=$cpu_arch --caches -c $file_name
+if [ "$cpu_arch" == "AtomicSimpleCPU" ] || [ "$cpu_arch" == "TimingSimpleCPU" ]; then
+    $gem5_folder/build/ALPHA/gem5.opt $gem5_folder/configs/example/se.py --cpu-type=$cpu_arch -c $file_name
+else
+    $gem5_folder/build/ALPHA/gem5.opt $gem5_folder/configs/example/se.py --cpu-type=$cpu_arch --caches -c $file_name
+fi
 
 # ticks
 ticks=$(cat m5out/stats.txt | grep "sim_ticks " | tr -s " " | cut -f 2 -d\ )
