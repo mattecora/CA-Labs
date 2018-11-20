@@ -1,0 +1,114 @@
+{
+    "basic": {
+        "fetch": {
+            "fetchWidth": 2,
+            "fetchBufferSize": 8,
+            "fetchQueueSize": 8
+        },
+        "decode": {
+            "decodeWidth": 2
+        },
+        "rename": {
+            "renameWidth": 2,
+            "numIQEntries": 4,
+            "numROBEntries": 4
+        },
+        "issue_dispatch": {
+            "dispatchWidth": 2,
+            "issueWidth": 2,
+            "LQEntries": 8,
+            "SQEntries": 8
+        },
+        "write": {
+            "wbWidth": 2
+        },
+        "commit": {
+            "commitWidth": 2,
+            "squashWidth": 2
+        }
+    },
+    "x2": {
+        "fetch": {
+            "fetchWidth": 4,
+            "fetchBufferSize": 16,
+            "fetchQueueSize": 16
+        },
+        "decode": {
+            "decodeWidth": 4
+        },
+        "rename": {
+            "renameWidth": 4,
+            "numIQEntries": 8,
+            "numROBEntries": 8
+        },
+        "issue_dispatch": {
+            "dispatchWidth": 4,
+            "issueWidth": 4,
+            "LQEntries": 16,
+            "SQEntries": 16
+        },
+        "write": {
+            "wbWidth": 4
+        },
+        "commit": {
+            "commitWidth": 4,
+            "squashWidth": 4
+        }
+    },
+    "x4": {
+        "fetch": {
+            "fetchWidth": 8,
+            "fetchBufferSize": 32,
+            "fetchQueueSize": 32
+        },
+        "decode": {
+            "decodeWidth": 8
+        },
+        "rename": {
+            "renameWidth": 8,
+            "numIQEntries": 16,
+            "numROBEntries": 16
+        },
+        "issue_dispatch": {
+            "dispatchWidth": 8,
+            "issueWidth": 8,
+            "LQEntries": 32,
+            "SQEntries": 32
+        },
+        "write": {
+            "wbWidth": 8
+        },
+        "commit": {
+            "commitWidth": 8,
+            "squashWidth": 8
+        }
+    },
+    "custom": {
+        "fetch": {
+            "fetchWidth": 8,
+            "fetchBufferSize": 32,
+            "fetchQueueSize": 32
+        },
+        "decode": {
+            "decodeWidth": 8
+        },
+        "rename": {
+            "renameWidth": 8,
+            "numIQEntries": 16,
+            "numROBEntries": 16
+        },
+        "issue_dispatch": {
+            "dispatchWidth": 8,
+            "issueWidth": 8,
+            "LQEntries": 32,
+            "SQEntries": 32
+        },
+        "write": {
+            "wbWidth": 8
+        },
+        "commit": {
+            "commitWidth": 8,
+            "squashWidth": 8
+        }
+    }
+}

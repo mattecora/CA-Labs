@@ -1,0 +1,18 @@
+{
+    "LocalBP": {
+        "localPredictorSize": 32,
+        "BTBEntries": 256
+    },
+    "TournamentBP": {
+        "localPredictorSize": 32,
+        "localHistoryTableSize": 256,
+        "globalPredictorSize": 64,
+        "choicePredictorSize": 64,
+        "BTBEntries": 256
+    },
+    "BiModeBP": {
+        "globalPredictorSize": 512,
+        "choicePredictorSize": 512,
+        "BTBEntries": 4096
+    }
+}

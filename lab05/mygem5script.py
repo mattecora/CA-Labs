@@ -39,40 +39,9 @@ from Caches import *
 import MemConfig
 
 # My values
-configs = {
-    "basic": {
-        "fetchWidth": 2,
-        "decodeWidth": 2,
-        "renameWidth": 2,
-        "dispatchWidth": 2,
-        "wbWidth": 2,
-        "commitWidth": 2
-    },
-    "x2": {
-        "fetchWidth": 4,
-        "decodeWidth": 4,
-        "renameWidth": 4,
-        "dispatchWidth": 4,
-        "wbWidth": 4,
-        "commitWidth": 4
-    },
-    "x4": {
-        "fetchWidth": 8,
-        "decodeWidth": 8,
-        "renameWidth": 8,
-        "dispatchWidth": 8,
-        "wbWidth": 8,
-        "commitWidth": 8
-    },
-    "custom": {
-        "fetchWidth": 8,
-        "decodeWidth": 8,
-        "renameWidth": 8,
-        "dispatchWidth": 8,
-        "wbWidth": 8,
-        "commitWidth": 8
-    }
-}
+import json
+configs = json.loads(open("configs.json").read())
+predictors = json.loads(open("predictors.json").read())
 
 def eprint(*args):
     sys.stderr.write("".join(args))
@@ -82,7 +51,7 @@ def main(options):
     process = create_process(options)
     run_one_simulation(options, process, options.my_config, options.my_bpred)
 
-def create_cpu(options, cpu_id, config, bpred):
+def create_cpu(options, cpu_id, config_name, bpred_name):
     # DerivO3CPU is the configurable out-of-order CPU model supplied by gem5
     the_cpu = DerivO3CPU(cpu_id=cpu_id)
     icache = L1_ICache(size=options.l1i_size, assoc=options.l1i_assoc)
@@ -95,29 +64,29 @@ def create_cpu(options, cpu_id, config, bpred):
     # ****************************
     # - FETCH STAGE
     # ****************************
-    the_cpu.fetchWidth = config["fetchWidth"]
-    the_cpu.fetchBufferSize = 8
-    the_cpu.fetchQueueSize = 8
+    the_cpu.fetchWidth = configs[config_name]["fetch"]["fetchWidth"]
+    the_cpu.fetchBufferSize = configs[config_name]["fetch"]["fetchBufferSize"]
+    the_cpu.fetchQueueSize = configs[config_name]["fetch"]["fetchQueueSize"]
 
     # ****************************
     # - DECODE STAGE
     # ****************************
-    the_cpu.decodeWidth = config["decodeWidth"]
+    the_cpu.decodeWidth = configs[config_name]["decode"]["decodeWidth"]
     
     # ****************************
     # - RENAME STAGE
     # ****************************
-    the_cpu.numIQEntries = 4 
-    the_cpu.numROBEntries = 4 
-    the_cpu.renameWidth = config["renameWidth"]
+    the_cpu.renameWidth = configs[config_name]["rename"]["renameWidth"]
+    the_cpu.numIQEntries = configs[config_name]["rename"]["numIQEntries"]
+    the_cpu.numROBEntries = configs[config_name]["rename"]["numROBEntries"]
 
     # ****************************
     # - DISPATCH/ISSUE STAGE 
     # ****************************
-    the_cpu.dispatchWidth = config["dispatchWidth"]
-    the_cpu.issueWidth = 2
-    the_cpu.LQEntries = 8
-    the_cpu.SQEntries = 8
+    the_cpu.dispatchWidth = configs[config_name]["issue_dispatch"]["dispatchWidth"]
+    the_cpu.issueWidth = configs[config_name]["issue_dispatch"]["issueWidth"]
+    the_cpu.LQEntries = configs[config_name]["issue_dispatch"]["LQEntries"]
+    the_cpu.SQEntries = configs[config_name]["issue_dispatch"]["SQEntries"]
 
     # ****************************
     # - EXECUTE STAGE 
@@ -127,24 +96,24 @@ def create_cpu(options, cpu_id, config, bpred):
     # -- BPU SELECTION
     # ****************************
     
-    if bpred == "LocalBP":
+    if bpred_name == "LocalBP":
         my_predictor = LocalBP()
-        my_predictor.localPredictorSize = 32
-        my_predictor.BTBEntries = 256
+        my_predictor.localPredictorSize = predictors["LocalBP"]["localPredictorSize"]
+        my_predictor.BTBEntries = predictors["LocalBP"]["BTBEntries"]
         the_cpu.branchPred = my_predictor
-    elif bpred == "TournamentBP":
+    elif bpred_name == "TournamentBP":
         my_predictor = TournamentBP()
-        my_predictor.localPredictorSize = 32
-        my_predictor.localHistoryTableSize = 256
-        my_predictor.globalPredictorSize = 64
-        my_predictor.choicePredictorSize = 64
-        my_predictor.BTBEntries = 256
+        my_predictor.localPredictorSize = predictors["TournamentBP"]["localPredictorSize"]
+        my_predictor.localHistoryTableSize = predictors["TournamentBP"]["localHistoryTableSize"]
+        my_predictor.globalPredictorSize = predictors["TournamentBP"]["globalPredictorSize"]
+        my_predictor.choicePredictorSize = predictors["TournamentBP"]["choicePredictorSize"]
+        my_predictor.BTBEntries = predictors["TournamentBP"]["BTBEntries"]
         the_cpu.branchPred = my_predictor
-    elif bpred == "BiModeBP":
+    elif bpred_name == "BiModeBP":
         my_predictor = BiModeBP()
-        my_predictor.globalPredictorSize = 64
-        my_predictor.choicePredictorSize = 64
-        my_predictor.BTBEntries = 256
+        my_predictor.globalPredictorSize = predictors["BiModeBP"]["globalPredictorSize"]
+        my_predictor.choicePredictorSize = predictors["BiModeBP"]["choicePredictorSize"]
+        my_predictor.BTBEntries = predictors["BiModeBP"]["BTBEntries"]
         the_cpu.branchPred = my_predictor
 
     # ********************************
@@ -174,13 +143,13 @@ def create_cpu(options, cpu_id, config, bpred):
     # ****************************
     # - WRITE STAGE  
     # ****************************
-    the_cpu.wbWidth = config["wbWidth"]
+    the_cpu.wbWidth = configs[config_name]["write"]["wbWidth"]
     
     # ****************************
     # - COMMIT STAGE  
     # ****************************
-    the_cpu.commitWidth = config["commitWidth"]
-    the_cpu.squashWidth =  2
+    the_cpu.commitWidth = configs[config_name]["commit"]["commitWidth"]
+    the_cpu.squashWidth = configs[config_name]["commit"]["squashWidth"]
     
     the_cpu[cpu_id].addPrivateSplitL1Caches(icache, dcache, None, None)
     the_cpu[cpu_id].createInterruptController()
@@ -213,7 +182,7 @@ def run_one_simulation(options, process, config_name, bpred_name):
         # in child
         os.chdir(the_dir)
         run_system_with_cpu(process, options, os.path.realpath("."),
-            real_cpu_create_function=lambda cpu_id: create_cpu(options, cpu_id, configs[config_name], bpred_name)
+            real_cpu_create_function=lambda cpu_id: create_cpu(options, cpu_id, config_name, bpred_name)
         )
         sys.exit(0)
     else:
