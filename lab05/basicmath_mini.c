@@ -54,7 +54,7 @@ int main(void)
     for(b1=10;b1>7;b1--) {
       //for(c1=5;c1<15;c1+=0.5) {
       for(c1=5;c1<6.5;c1+=0.5) {
-	//for(d1=-1;d1>-11;d1--) {
+        //for(d1=-1;d1>-11;d1--) {
         for(d1=-1;d1>-4;d1--) {
           SolveCubic(a1, b1, c1, d1, &solutions, x);  
           printf("Solutions [%f,%f,%f,%f]:",a1,b1,c1,d1);
