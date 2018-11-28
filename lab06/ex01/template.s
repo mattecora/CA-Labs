@@ -102,10 +102,10 @@ Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
 				
 				; your code here
-                LDR     R0, =0x7FFFFFFF
-                LDR     R1, =0x1
-                LDR     R3, =0x4
-                LDR     R4, =0x5
+                LDR     R0, =0x0
+                LDR     R1, =0xFFFFFFFF
+                LDR     R3, =0x5
+                LDR     R4, =0x4
 
                 ADDS    R2, R0, R1
                 SUBS    R5, R4, R3

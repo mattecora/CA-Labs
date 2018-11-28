@@ -107,7 +107,7 @@ Reset_Handler   PROC
                 LDR     R2, =0x20               ; loop counter
                 
 RotateLoop      RORS    R0, R0, #1              ; rotate right by 1 and set flags (C)
-                MVNHS   R1, R1                  ; flip parity bit if C = 1
+                MVNCS   R1, R1                  ; flip parity bit if C = 1
                 
                 SUBS    R2, R2, #1              ; decrement and set flags (Z)
                 BNE     RotateLoop              ; branch if not zero

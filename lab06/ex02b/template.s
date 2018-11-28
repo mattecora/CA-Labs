@@ -102,17 +102,17 @@ Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
 				
 				; your code here
-                LDR     R0, =0x4
-                LDR     R1, =0x6
+                LDR     R0, =0x6
+                LDR     R1, =0x4
 
                 CMP     R0, R1
                 BEQ     Equals
 
-                ADDNE   R2, R0, R1
-                ASRNE   R2, R2, #1
+                ADD     R2, R0, R1      ; R2 = R0 + R1
+                ASR     R2, R2, #1      ; R2 = R2 / 2 (R2 >> 1)
                 B       InfLoop
 
-Equals          MULEQ   R3, R0, R0
+Equals          MUL     R3, R0, R0      ; R3 = R0 * R0 (R0 ^ 2)
 				
 InfLoop         B      	InfLoop
                 ENDP
