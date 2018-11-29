@@ -17,7 +17,7 @@ __initial_sp
 
 Heap_Size       EQU     0x00000200
 
-                AREA    HEAP, NOINIT, READWRITE, ALIGN=3
+                AREA    HEAP, READWRITE, ALIGN=3
 __heap_base
 Heap_Mem        SPACE   Heap_Size
 __heap_limit
@@ -91,10 +91,11 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 AREA    |.ARM.__at_0x02FC|, CODE, READONLY
 CRP_Key         DCD     0xFFFFFFFF
                 ENDIF
-
-
+                
+                AREA    MYDATA, DATA, READWRITE, ALIGN=2
+Price_list_RW   SPACE   224                 ; will contain the sorted data
+                
                 AREA    |.text|, CODE, READONLY
-
 
 ; Reset Handler
 
@@ -103,51 +104,94 @@ Reset_Handler   PROC
 
 Right_bound     EQU     27
 
-                ;       RESULT = 424975F
+;               RESULT = 424975F
+                
+;               ################
+;               # SORT SECTION #
+;               ################
+                
+                LDR     R0, =1                      ; External loop index in R0
+                LDR     R1, =Price_list             ; Base register for RO in R1
+                LDR     R2, =Price_list_RW          ; Base register for RW in R2
+                
+                LDR     R3, [R1]
+                STR     R3, [R2]                    ; Store the first value in RW
+                LDR     R3, [R1, #4]
+                LDR     R3, [R2, #4]                ; Store the first price in RW
+                
+SortLoop1       ADD     R10, R1, R0, LSL #3         ; Compute target address in R10
+                LDRD    R3, R4, [R10]               ; Load external value and the price in R3-R4
+                MOV     R5, R0                      ; Internal loop index in R5
+                
+SortLoop2       SUB     R5, R5, #1
+                ADD     R10, R2, R5, LSL #3         ; Compute target address in R10
+                LDRD    R6, R7, [R10]               ; Load the previous value and the price in R6-R7
+                ADD     R5, R5, #1
+                
+                
+                ADD     R10, R2, R5, LSL #3         ; Compute target address in R10
+                CMP     R3, R6                      ; Compare values
+                
+                ;       Greater or equal
+                BGE     NextSL1                     ; Break
+                
+                ;       Lower
+                STRD    R6, R7, [R10]               ; Store the internal value and its price in the following cells
+                SUBS    R5, R5, #1                  ; Decrement iternal index by 1
+                BGE     SortLoop2
 
-                ;       general initialization
+NextSL1         STRD    R3, R4, [R10]               ; Store the external value and its price in the target cells
+                ADD     R0, R0, #1                  ; Increment external index by 1
+                CMP     R0, #Right_bound
+                BLE     SortLoop1
+
+;               ###################
+;               # COMPUTE SECTION #
+;               ###################
+
+                ;       General initialization
                 LDRB    R0, Item_num        ; R0 = Item_num
                 LDR     R1, =Item_list      ; R1 = &Item_list
-                LDR     R9, =Price_list     ; R9 = &Price_list
+                LDR     R9, =Price_list_RW  ; R9 = &Price_list
                 LDR     R10, =0             ; R10 = 0
                 
-                ;       items loop initialization
+                ;       Items loop initialization
 ItemsLoop       LDR     R2, =0              ; R2 = 0
                 LDR     R3, =Right_bound    ; R3 = Num_entries - 1
                 LDR     R4, [R1]            ; R4 = item (*Item_list)
                 LDR     R5, [R1, #4]        ; R5 = qty (*(Item_list+4))
                 
-                ;       compute the middle
+                ;       Compute the middle
 SearchLoop      ADD     R6, R2, R3          ; R6 = R2 + R3
                 ASR     R6, R6, #1          ; R6 = R6 / 2 (middle)
                 LSL     R7, R6, #3          ; R7 = R6 * 4 bytes/word * 2 words to consider
                 
-                ;       load value and compare
+                ;       Load value and compare
                 LDR     R8, [R9, R7]        ; R8 = val ([R7+R9])
                 CMP     R4, R8              ; item == val
                 
-                ;       equals
+                ;       Equals
                 ADDEQ   R7, R7, #4          ; consider the price
                 LDREQ   R8, [R9, R7]        ; R8 = price ([R8+R9])
                 MULEQ   R8, R5, R8          ; R8 = price * qty (R5*R8)
                 ADDEQ   R10, R10, R8        ; update total price
                 BEQ     Next                ; break
                 
-                ;       greater (HI)
+                ;       Greater (HI)
                 ADDHI   R2, R6, #1          ; first = middle + 1
                 
-                ;       lower (LO)
+                ;       Lower (LO)
                 SUBLO   R3, R6, #1          ; last = middle - 1
                 
-                ;       check search loop condition
+                ;       Check search loop condition
                 CMP     R2, R3
                 BLE     SearchLoop          ; branch if first <= last (signed!)
                 
-                ;       item is not present
+                ;       Item is not present
                 LDR     R10, =0             ; set R10 to zero
                 B       InfLoop             ; terminate
                 
-                ;       check item loop condition
+                ;       Check item loop condition
 Next            ADD     R1, R1, #8          ; R1 = R1 + 8
                 SUBS    R0, R0, #1          ; R0 = R0 - 1
                 BNE     ItemsLoop           ; Branch if Z = 1
@@ -155,15 +199,15 @@ Next            ADD     R1, R1, #8          ; R1 = R1 + 8
 InfLoop         B      	InfLoop
                 ENDP
 
-                ; literal pool
+                ; Literal pool
 
-Price_list      DCD     0x004,  120,    0x006,  315,    0x007,  1210,   0x00A,  245 
+Price_list      DCD     0x01B,  34,     0x01A,  2222,   0x018,  138,    0x01E,  11
+                DCD     0x02C,  2245,   0x02D,  410,    0x031,  840,    0x033,  945    
                 DCD     0x010,  228,    0x012,  7,      0x016,  722,    0x017,  1217 
-                DCD     0x018,  138,    0x01A,  2222,   0x01B,  34,     0x01E,  11
-                DCD     0x022,  223,    0x023,  1249,   0x025,  240,    0x027,  112
-                DCD     0x02C,  2245,   0x02D,  410,    0x031,  840,    0x033,  945
-                DCD     0x036,  3211,   0x039,  112,    0x03C,  719,    0x03E,  661
                 DCD     0x042,  230,    0x045,  1112,   0x047,  2627,   0x04A,  265
+                DCD     0x022,  223,    0x023,  1249,   0x025,  240,    0x027,  112
+                DCD     0x036,  3211,   0x039,  112,    0x03C,  719,    0x03E,  661
+                DCD     0x004,  120,    0x006,  315,    0x007,  1210,   0x00A,  245
 
 Item_list	    DCD     0x022,  14,     0x006,  431,    0x03E,  1210,   0x017,  56342 
 
