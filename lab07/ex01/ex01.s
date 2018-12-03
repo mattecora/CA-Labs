@@ -103,59 +103,71 @@ Reset_Handler   PROC
 
 Right_bound     EQU     27
 
-                ;       RESULT = 424975F
+;               RESULT = 424975F
 
-                ;       general initialization
-                LDRB    R0, Item_num        ; R0 = Item_num
-                LDR     R1, =Item_list      ; R1 = &Item_list
-                LDR     R9, =Price_list     ; R9 = &Price_list
-                LDR     R10, =0             ; R10 = 0
+;               Registers:
+;               - r0: set to Item_num for comparison
+;               - r1: base address for accessing Item_list
+;               - r2: left bound for the binary search
+;               - r3: right bound for the binary search
+;               - r4: item read from Item_list
+;               - r5: quantity read from Item_list
+;               - r6: middle value for the binary search
+;               - r7: item read from Price_list
+;               - r8: price read from Price_list
+;               - r9: base address for accessing Price_list
+;               - r10: total price
+
+;               Algorithm: binary search
+
+                ;       General initialization
+                LDRB    R0, Item_num                ; Set R0 to Item_num
+                LDR     R1, =Item_list              ; Base register for Item_list in R1
+                LDR     R9, =Price_list             ; Base register for Price_list in R9
+                LDR     R10, =0                     ; Initial price to zero
                 
-                ;       items loop initialization
-ItemsLoop       LDR     R2, =0              ; R2 = 0
-                LDR     R3, =Right_bound    ; R3 = Num_entries - 1
-                LDR     R4, [R1]            ; R4 = item (*Item_list)
-                LDR     R5, [R1, #4]        ; R5 = qty (*(Item_list+4))
+                ;       Items loop initialization
+ItemsLoop       LDR     R2, =0                      ; Left bound to zero
+                LDR     R3, =Right_bound            ; Right bound to Num_entries - 1
+                LDRD    R4, R5, [R1]                ; Load item in R4 and quantity in R5
                 
-                ;       compute the middle
-SearchLoop      ADD     R6, R2, R3          ; R6 = R2 + R3
-                ASR     R6, R6, #1          ; R6 = R6 / 2 (middle)
-                LSL     R7, R6, #3          ; R7 = R6 * 4 bytes/word * 2 words to consider
+                ;       Compute the middle
+SearchLoop      ADD     R6, R2, R3                  ; R6 = R2 + R3
+                ASR     R6, R6, #1                  ; R6 = R6 / 2
                 
-                ;       load value and compare
-                LDR     R8, [R9, R7]        ; R8 = val ([R7+R9])
-                CMP     R4, R8              ; item == val
+                ;       Load value and compare
+                ADD     R7, R9, R6, LSL #3          ; Compute address for val and price in R7 (R9 + R6*8)
+                LDRD    R7, R8, [R7]                ; Load val in R7 and price in R8
+                CMP     R4, R7                      ; Compare item and val
                 
-                ;       equals
-                ADDEQ   R7, R7, #4          ; consider the price
-                LDREQ   R8, [R9, R7]        ; R8 = price ([R8+R9])
-                MULEQ   R8, R5, R8          ; R8 = price * qty (R5*R8)
-                ADDEQ   R10, R10, R8        ; update total price
-                BEQ     Next                ; break
+                ;       Equals
+                MULEQ   R8, R5, R8                  ; Compute price for the product (R5*R8)
+                ADDEQ   R10, R10, R8                ; Update total price
+                BEQ     NextSearchLoop              ; Break
                 
-                ;       greater (HI)
-                ADDHI   R2, R6, #1          ; first = middle + 1
+                ;       Greater (HI)
+                ADDHI   R2, R6, #1                  ; Update left bound (middle+1)
                 
-                ;       lower (LO)
-                SUBLO   R3, R6, #1          ; last = middle - 1
+                ;       Lower (LO)
+                SUBLO   R3, R6, #1                  ; Update right bound (middle-1)
                 
-                ;       check search loop condition
+                ;       Check search loop condition
                 CMP     R2, R3
-                BLE     SearchLoop          ; branch if first <= last (signed!)
+                BLE     SearchLoop                  ; Branch if first <= last (signeds)
                 
-                ;       item is not present
-                LDR     R10, =0             ; set R10 to zero
-                B       InfLoop             ; terminate
+                ;       Item is not present
+                LDR     R10, =0                     ; Set total price to zero
+                B       InfLoop                     ; Terminate
                 
-                ;       check item loop condition
-Next            ADD     R1, R1, #8          ; R1 = R1 + 8
-                SUBS    R0, R0, #1          ; R0 = R0 - 1
-                BNE     ItemsLoop           ; Branch if Z = 1
+                ;       Check item loop condition
+NextSearchLoop  ADD     R1, R1, #8                  ; Update R1 (R1 = R1+8)
+                SUBS    R0, R0, #1                  ; Update R0 (R0 = R0-1)
+                BNE     ItemsLoop                   ; Branch if Z = 1
 				
 InfLoop         B      	InfLoop
                 ENDP
 
-                ; literal pool
+                ;       Literal pool
 
 Price_list      DCD     0x004,  120,    0x006,  315,    0x007,  1210,   0x00A,  245 
                 DCD     0x010,  228,    0x012,  7,      0x016,  722,    0x017,  1217 
