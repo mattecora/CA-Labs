@@ -101,7 +101,7 @@ CRP_Key         DCD     0xFFFFFFFF
 Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
 
-Right_bound     EQU     27
+Num_items       EQU     28
 
 ;               RESULT = 424975F
 
@@ -128,7 +128,7 @@ Right_bound     EQU     27
                 
                 ;       Items loop initialization
 ItemsLoop       LDR     R2, =0                      ; Left bound to zero
-                LDR     R3, =Right_bound            ; Right bound to Num_entries - 1
+                LDR     R3, =(Num_items-1)          ; Right bound to Num_items - 1
                 LDRD    R4, R5, [R1]                ; Load item in R4 and quantity in R5
                 
                 ;       Compute the middle
@@ -164,7 +164,7 @@ NextSearchLoop  ADD     R1, R1, #8                  ; Update R1 (R1 = R1+8)
                 SUBS    R0, R0, #1                  ; Update R0 (R0 = R0-1)
                 BNE     ItemsLoop                   ; Branch if Z = 1
 				
-InfLoop         B      	InfLoop
+InfLoop         B       InfLoop
                 ENDP
 
                 ;       Literal pool
@@ -177,9 +177,9 @@ Price_list      DCD     0x004,  120,    0x006,  315,    0x007,  1210,   0x00A,  
                 DCD     0x036,  3211,   0x039,  112,    0x03C,  719,    0x03E,  661
                 DCD     0x042,  230,    0x045,  1112,   0x047,  2627,   0x04A,  265
 
-Item_list	    DCD     0x022,  14,     0x006,  431,    0x03E,  1210,   0x017,  56342 
+Item_list       DCD     0x022,  14,     0x006,  431,    0x03E,  1210,   0x017,  56342 
 
-Item_num	    DCB     4
+Item_num        DCB     4
 
 ; Dummy Exception Handlers (infinite loops which can be modified)
 

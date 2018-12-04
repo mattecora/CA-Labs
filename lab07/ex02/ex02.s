@@ -103,7 +103,7 @@ CRP_Key         DCD     0xFFFFFFFF
 Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
 
-Right_bound     EQU     27
+Num_items       EQU     28
 
 ;               RESULT = 424975F
 
@@ -128,21 +128,18 @@ Right_bound     EQU     27
                 LDR     R1, =Price_list             ; Base register for RO in R1
                 LDR     R2, =Price_list_RW          ; Base register for RW in R2
                 
-                LDR     R3, [R1]
-                STR     R3, [R2]                    ; Store the first value in RW
-                LDR     R3, [R1, #4]
-                LDR     R3, [R2, #4]                ; Store the first price in RW
+                LDRD    R3, R4, [R1]                ; Load the first value and price
+                STRD    R3, R4, [R2]                ; Store the first value and price in RW
                 
 SortLoop1       ADD     R10, R1, R0, LSL #3         ; Compute target address in R10 (R1 + R0*8)
                 LDRD    R3, R4, [R10]               ; Load external value and the price in R3-R4
                 MOV     R5, R0                      ; Internal loop index in R5
                 
-SortLoop2       SUB     R5, R5, #1
+SortLoop2       SUB     R5, R5, #1                  ; Consider the previous element
                 ADD     R10, R2, R5, LSL #3         ; Compute target address in R10 (R2 + R5*8)
-                
                 LDRD    R6, R7, [R10]               ; Load the previous value and the price in R6-R7
-                ADD     R5, R5, #1
                 
+                ADD     R5, R5, #1                  ; Consider the following element
                 ADD     R10, R2, R5, LSL #3         ; Compute target address in R10 (R2 + R5*8)
                 CMP     R3, R6                      ; Compare values
                 
@@ -156,8 +153,8 @@ SortLoop2       SUB     R5, R5, #1
 
 NextSortLoop1   STRD    R3, R4, [R10]               ; Store the external value and its price in the target cells
                 ADD     R0, R0, #1                  ; Increment external index by 1
-                CMP     R0, #Right_bound
-                BLE     SortLoop1
+                CMP     R0, #Num_items
+                BLT     SortLoop1
 
 ;               ###################
 ;               # COMPUTE SECTION #
@@ -171,7 +168,7 @@ NextSortLoop1   STRD    R3, R4, [R10]               ; Store the external value a
                 
                 ;       Items loop initialization
 ItemsLoop       LDR     R2, =0                      ; Left bound to zero
-                LDR     R3, =Right_bound            ; Right bound to Num_entries - 1
+                LDR     R3, =(Num_items-1)          ; Right bound to Num_items - 1
                 LDRD    R4, R5, [R1]                ; Load item in R4 and quantity in R5
                 
                 ;       Compute the middle
@@ -207,7 +204,7 @@ NextSearchLoop  ADD     R1, R1, #8                  ; Update R1 (R1 = R1+8)
                 SUBS    R0, R0, #1                  ; Update R0 (R0 = R0-1)
                 BNE     ItemsLoop                   ; Branch if Z = 1
 				
-InfLoop         B      	InfLoop
+InfLoop         B       InfLoop
                 ENDP
 
                 ;       Literal pool
@@ -220,9 +217,9 @@ Price_list      DCD     0x007,  1210,   0x01E,  11,     0x039,  112,    0x018,  
                 DCD     0x031,  840,    0x022,  223,    0x033,  945,    0x017,  1217
                 DCD     0x03C,  719,    0x00A,  245,    0x023,  1249,   0x04A,  265
 
-Item_list	    DCD     0x022,  14,     0x006,  431,    0x03E,  1210,   0x017,  56342 
+Item_list       DCD     0x022,  14,     0x006,  431,    0x03E,  1210,   0x017,  56342 
 
-Item_num	    DCB     4
+Item_num        DCB     4
 
 ; Dummy Exception Handlers (infinite loops which can be modified)
 
