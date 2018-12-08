@@ -158,9 +158,10 @@ SVC_Handler     PROC
                     
                 STMFD   SP!, {R0-R12, LR}       ; Backup registers on the stack
                 MRS     R1, PSP                 ; Load user SP into R1
+;               ADD     R1, SP, #56             ; For privileged execution (14 registers on the stack)
                 
                 LDR     R0, [R1, #24]
-                LDR     R0, [R0,#-4]
+                LDR     R0, [R0, #-4]
                 BIC     R0, #0xFF000000
                 LSR     R0, #16                 ; Obtain SVC value in R0
                 
@@ -197,7 +198,7 @@ Nxt_SVC_Handler CMP     R0, #64
                 MUL     R4, R4, R3              ; R4 = R4 * R3
                 SUB     R4, R2, R4              ; R4 = R2 - R3
                 
-                STR     R3, [R1]                ; Update R0 in the PSP
+                STR     R4, [R1]                ; Update R0 in the PSP
                 
 End_SVC_Handler LDMFD   SP!, {R0-R12, LR}       ; Restore registers from the stack
                 BX      LR
