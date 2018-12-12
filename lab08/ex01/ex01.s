@@ -168,7 +168,7 @@ SVC_Handler     PROC
                 CMP     R0, #12
                 BHI     Nxt_SVC_Handler
                 
-;               0 <= SVC <= 12
+;               SVC in 0-12
                 MOV     R2, #0
                 
                 STREQ   R2, [R1, #16]           ; If R12, update stack frame in PSP
@@ -183,10 +183,10 @@ SVC_Handler     PROC
                 
 Nxt_SVC_Handler CMP     R0, #64
                 
-;               13 <= SVC <= 63
+;               SVC in 13-63
                 BLS     End_SVC_Handler         ; Do nothing
               
-;               SVC >= 64
+;               SVC more than 64
                 AND     R2, R0, #0x7            ; First register index in R2
                 LDR     R2, [SP, R2, LSL #2]    ; Dividend in R2
                 
