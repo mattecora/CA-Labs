@@ -4,7 +4,7 @@
 #include    "LPC17xx.h"
 
 //          lib_button.c
-void        ButtonInit(void);           // Buttons initialization
+void        Button_Init(void);          // Buttons initialization
 
 //          IRQ_button.c
 void        EINT1_IRQHandler(void);     // Handler for INT0

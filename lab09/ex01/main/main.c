@@ -3,9 +3,9 @@
 #include "../button/button.h"
 
 int main() {
-    SystemInit();
-    LEDInit(0x80);
-    ButtonInit();
+    // SystemInit() called by startup_LPC17xx.s
+    LED_Init(0x01);
+    Button_Init();
     
     while (1) {
         __ASM("WFI");

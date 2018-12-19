@@ -8,13 +8,13 @@
 #define     SHIFT_RIGHT  1
 
 //          lib_led.c
-void        LEDInit(unsigned int initial_value);    // LEDs initialization
-void        LEDDeinit(void);                        // LEDs deinitialization
+void        LED_Init(unsigned int initial_value);   // LEDs initialization
+void        LED_Deinit(void);                       // LEDs deinitialization
 
 //          func_led.c
-void        LEDOn(unsigned int num);                // Turn on a LED
-void        LEDOff(unsigned int num);               // Turn off a LED
-void        LEDOut(unsigned int value);             // Set a value to the LED array
-void        LEDShift(int dir);                      // Shift active LED
+void        LED_On(unsigned int num);               // Turn on a LED
+void        LED_Off(unsigned int num);              // Turn off a LED
+void        LED_Out(unsigned int value);            // Set a value to the LED array
+void        LED_Shift(int dir);                     // Shift active LED
 
 #endif
