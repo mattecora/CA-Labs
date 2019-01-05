@@ -12,6 +12,7 @@ void Run_State0(void)
     {
         /* Stop the RIT (if coming from STATE_RFG) */
         RIT_Disable();
+        RIT_Reset();
 
         /* Reset the other timer (if coming from STATE_RFG) */
         Timer_Reset(TIMER1);
@@ -39,7 +40,6 @@ void Run_State1(void)
     Timer_Start(TIMER1);
 
     /* Start blinking via RIT */
-    RIT_Reset();
     RIT_Enable();
 }
 
@@ -47,6 +47,7 @@ void Run_State2(void)
 {
     /* Stop blinking via RIT */
     RIT_Disable();
+    RIT_Reset();
 
     /* Set the current state */
     current_state = STATE_GR;
