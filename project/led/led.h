@@ -3,6 +3,7 @@
 
 #include    "LPC17xx.h"
 
+/*--------- LED-related defines --------------------------------------------*/
 #define     LED_NUM         8
 #define     LED_ALL         0xFF
 #define     LED_NONE        0x00
@@ -13,15 +14,17 @@
 #define     CAR_YELLOW      0x10
 #define     CAR_GREEN       0x08
 
-extern      unsigned char   led_value;                      // Current LED value
+extern      uint8_t         led_value;              /* Current LED value    */
 
-//          lib_led.c
-void        LED_Init        (unsigned char initial_value);  // LEDs initialization
-void        LED_Deinit      (void);                         // LEDs deinitialization
+/*--------- lib_led.c ------------------------------------------------------*/
 
-//          func_led.c
-void        LED_On          (unsigned char num);            // Turn on a LED
-void        LED_Off         (unsigned char num);            // Turn off a LED
-void        LED_Out         (unsigned char value);          // Set a value to the LED array
+void        LED_Init(uint8_t initial_value);        /* Initialize LEDs      */
+void        LED_Deinit(void);                       /* Deinitialize LEDs    */
+
+/*--------- func_led.c -----------------------------------------------------*/
+
+void        LED_On(uint8_t num);                    /* Turn on a LED        */
+void        LED_Off(uint8_t num);                   /* Turn off a LED       */
+void        LED_Out(uint8_t value);                 /* Output value on LEDs */
 
 #endif

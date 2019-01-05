@@ -5,16 +5,20 @@
 #include    "../timer/timer.h"
 #include    "../rit/rit.h"
 
-typedef     enum state      state_t;                    // Definition of state_t type
+/*--------- State-related definitions --------------------------------------*/
 
 enum        state           {STATE_RG, STATE_RFG, STATE_GR, STATE_YR};
+typedef     enum state      state_t;                /* state_t definition   */
 
-extern      state_t         current_state;              // Current semaphore state
-extern      void            (*Run_State[4])(void);      // Vector of state handlers
+extern      state_t         current_state;          /* Semaphore state      */
 
-void        Run_State0      (void);                     // State handler for STATE_RG
-void        Run_State1      (void);                     // State handler for STATE_RFG
-void        Run_State2      (void);                     // State handler for STATE_GR
-void        Run_State3      (void);                     // State handler for STATE_YR
+/*--------- State handlers -------------------------------------------------*/
+
+extern      void (*Run_State[4])(void);             /* Vector of handlers   */
+
+void        Run_State0(void);                       /* STATE_RG handler     */
+void        Run_State1(void);                       /* STATE_RFG handler    */
+void        Run_State2(void);                       /* STATE_GR handler     */
+void        Run_State3(void);                       /* STATE_YR handler     */
 
 #endif

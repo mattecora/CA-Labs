@@ -5,15 +5,25 @@
 
 #include    "../led/led.h"
 
-#define     TIME_2HZ            0x00BEBC20
+/*--------- RIT frequency defines ------------------------------------------*/
 
-//          lib_rit.c
-void        RIT_Init            (unsigned int rit_interval);    // RIT initialization
-void        RIT_Enable          (void);                         // Enable RIT
-void        RIT_Disable         (void);                         // Disable RIT
-void        RIT_Reset           (void);                         // Reset RIT count
+#define     DEBUG                                   /* Delete for real vals */
 
-//          IRQ_rit.c
-void        RIT_IRQHandler      (void);                         // Handler for RIT
+#ifdef      DEBUG
+#define     FREQ_2HZ        0x001312D0              /* Divided by 10        */
+#else
+#define     FREQ_2HZ        0x00BEBC20              /* True value           */
+#endif
+
+/*--------- lib_rit.c ------------------------------------------------------*/
+
+void        RIT_Init(uint32_t rit_interval);        /* Initialize the RIT   */
+void        RIT_Enable(void);                       /* Enable the RIT       */
+void        RIT_Disable(void);                      /* Disable the RIT      */
+void        RIT_Reset(void);                        /* Reset the RIT        */
+
+/*--------- IRQ_rit.c ------------------------------------------------------*/
+
+void        RIT_IRQHandler(void);                   /* Handler for RIT      */
 
 #endif

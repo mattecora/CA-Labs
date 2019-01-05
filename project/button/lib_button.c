@@ -1,29 +1,20 @@
 #include "button.h"
 
-void Button_Init(unsigned char keys) {
-    if (keys & BUTTON_INT0) {
-        LPC_PINCON->PINSEL4    |= (1 << 20);        // External interrupt 0 pin selection
-        LPC_GPIO2->FIODIR      &= ~(1 << 10);       // PORT2.10 defined as input
-        
-        NVIC_EnableIRQ(EINT2_IRQn);                 // Enable IRQ for EINT2 in NVIC
-        NVIC_SetPriority(EINT2_IRQn, 1);            // Set the priority for EINT2
-    }
+void Button_Init(uint8_t keys)
+{
+    /* Set interrupt mode on selected keys (P2.10, P2.11, P2.12) */
+    LPC_PINCON->PINSEL4 |= ((keys & BUTTON_INT0) | 
+                           ((keys & BUTTON_KEY1) << 1) | 
+                           ((keys & BUTTON_KEY2) << 2)) << 20;
     
-    if (keys & BUTTON_KEY1) {
-        LPC_PINCON->PINSEL4    |= (1 << 22);        // External interrupt 1 pin selection
-        LPC_GPIO2->FIODIR      &= ~(1 << 11);       // PORT2.11 defined as input
-        
-        NVIC_EnableIRQ(EINT1_IRQn);                 // Enable IRQ for EINT1 in NVIC
-        NVIC_SetPriority(EINT1_IRQn, 2);            // Set the priority for EINT1
-    }
+    /* Set direction to input on selected keys (P2.10, P2.11, P2.12) */
+    LPC_GPIO2->FIODIR &= ~(keys << 10);
     
-    if (keys & BUTTON_KEY2) {
-        LPC_PINCON->PINSEL4    |= (1 << 24);        // External interrupt 2 pin selection
-        LPC_GPIO2->FIODIR      &= ~(1 << 12);       // PORT2.12 defined as input
-        
-        NVIC_EnableIRQ(EINT0_IRQn);                 // Enable IRQ for EINT0 in NVIC
-        NVIC_SetPriority(EINT0_IRQn, 3);            // Set the priority for EINT0
-    }
-    
-    LPC_SC->EXTMODE = 0x7;    
+    /* Enable the interrupt handlers */
+    if (keys & BUTTON_INT0)
+        NVIC_EnableIRQ(EINT2_IRQn);
+    if (keys & BUTTON_KEY1)
+        NVIC_EnableIRQ(EINT1_IRQn);
+    if (keys & BUTTON_KEY2)
+        NVIC_EnableIRQ(EINT0_IRQn);
 }

@@ -1,10 +1,19 @@
 #include "rit.h"
 
-void RIT_IRQHandler(void) {
+void RIT_IRQHandler(void)
+{
+    /* Toggle LED state */
     if ((led_value & 0xFF) == (CAR_RED | PED_GREEN))
-        LED_Off(6);             // Turn off if on
-    else
-        LED_On(6);              // Turn on if off
-    
-    LPC_RIT->RICTRL |= 0x1;     // Clear interrupt flag
+    {
+        /* Turn off if on */
+        LED_Out(CAR_RED);
+    }
+    else if ((led_value & 0xFF) == CAR_RED)
+    {
+        /* Turn on if off */
+        LED_Out(CAR_RED | PED_GREEN);
+    }
+
+    /* Clear interrupt flag */
+    LPC_RIT->RICTRL |= 0x1;
 }
