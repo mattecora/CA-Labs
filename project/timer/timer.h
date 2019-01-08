@@ -21,6 +21,7 @@
 
 /*--------- Timer behavior defines -----------------------------------------*/
 
+#define     TIMER_NOP       0
 #define     TIMER_INT       1
 #define     TIMER_RST       2
 #define     TIMER_STP       4
@@ -34,11 +35,13 @@
 
 #define     TIME_5SEC       0x00BEBC20              /* Divided by 10        */
 #define     TIME_15SEC      3 * TIME_5SEC           /* Divided by 10        */
+#define     FREQ_2HZ        0x001312D0              /* Divided by 10        */
 
 #else
 
 #define     TIME_5SEC       0x07735940              /* True value           */
 #define     TIME_15SEC      3 * TIME_5SEC           /* True value           */
+#define     FREQ_2HZ        0x00BEBC20              /* True value           */
 
 #endif
 
@@ -48,6 +51,12 @@ void        Timer_Init(uint8_t timer_num,
                        uint8_t match_reg,
                        uint32_t timer_interval,
                        uint8_t timer_behavior);     /* Initialize a timer   */
+void        Timer_SetMR(uint8_t timer_num,
+                        uint8_t match_reg,
+                        uint32_t timer_interval);   /* Set a timer MR       */
+void        Timer_SetMCR(uint8_t timer_num,
+                         uint8_t match_reg,
+                         uint8_t timer_behavior);   /* Set a timer MCR      */
 void        Timer_Start(uint8_t timer_num);         /* Start a timer        */
 void        Timer_Stop(uint8_t timer_num);          /* Stop a timer         */
 void        Timer_Reset(uint8_t timer_num);         /* Reset a timer        */

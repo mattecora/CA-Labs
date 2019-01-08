@@ -10,12 +10,11 @@ void Run_State0(void)
 {
     if (current_state == STATE_RFG)
     {
-        /* Stop the RIT (if coming from STATE_RFG) */
-        RIT_Disable();
-        RIT_Reset();
-
-        /* Reset the other timer (if coming from STATE_RFG) */
+        /* Reset the blinking timer (if coming from STATE_RFG) */
         Timer_Reset(TIMER1);
+
+        /* Reset the main timer (if coming from STATE_RFG) */
+        Timer_Reset(TIMER0);
     }
     
     /* Set the current state */
@@ -24,7 +23,11 @@ void Run_State0(void)
     /* Set the semaphore lights */
     LED_Out(CAR_RED | PED_GREEN);
 
-    /* Start the 15s timer */
+    /* Match on 15s */
+    Timer_SetMCR(TIMER0, TIMER_MATCH0, TIMER_IRS);
+    Timer_SetMCR(TIMER0, TIMER_MATCH1, TIMER_NOP);
+    
+    /* Start the main timer */
     Timer_Start(TIMER0);
 }
 
@@ -36,19 +39,22 @@ void Run_State1(void)
     /* Set the semaphore lights */
     LED_Out(CAR_RED | PED_GREEN);
 
-    /* Start the 5s timer */
-    Timer_Start(TIMER1);
+    /* Match on 5s */
+    Timer_SetMCR(TIMER0, TIMER_MATCH0, TIMER_NOP);
+    Timer_SetMCR(TIMER0, TIMER_MATCH1, TIMER_IRS);
+    
+    /* Start the main timer */
+    Timer_Start(TIMER0);
 
-    /* Start blinking via RIT */
-    RIT_Enable();
+    /* Start the blinking timer */
+    Timer_Start(TIMER1);
 }
 
 void Run_State2(void)
 {
-    /* Stop blinking via RIT */
-    RIT_Disable();
-    RIT_Reset();
-
+    /* Reset the blinking timer */
+    Timer_Reset(TIMER1);
+    
     /* Set the current state */
     current_state = STATE_GR;
 
@@ -64,7 +70,7 @@ void Run_State3(void)
     /* Set the semaphore lights */
     LED_Out(CAR_YELLOW | PED_RED);
 
-    /* Start the 5s timer */
-    Timer_Reset(TIMER1);
-    Timer_Start(TIMER1);
+    /* Start the main timer */
+    Timer_Reset(TIMER0);
+    Timer_Start(TIMER0);
 }

@@ -5,9 +5,9 @@ void Handle_Req(void)
     switch (current_state)
     {
     case STATE_RG:
-        /* Reset the timer */
-        Timer_Reset(0);
-        Timer_Start(0);
+        /* Reset the main timer */
+        Timer_Reset(TIMER0);
+        Timer_Start(TIMER0);
         break;
 
     case STATE_RFG:
@@ -16,8 +16,8 @@ void Handle_Req(void)
         break;
 
     case STATE_GR:
-        /* Start the 5s timer */
-        Timer_Start(1);
+        /* Start the main timer */
+        Timer_Start(TIMER0);
         break;
 
     case STATE_YR:

@@ -3,7 +3,6 @@
 #include "../led/led.h"
 #include "../button/button.h"
 #include "../timer/timer.h"
-#include "../rit/rit.h"
 
 #include "../state/state.h"
 
@@ -17,14 +16,12 @@ int main(void)
     /* Initialize all buttons */
     Button_Init(BUTTON_ALL);
 
-    /* Initialize timer 0 (15 seconds timer) */
-    Timer_Init(TIMER0, TIMER_MATCH0, TIME_15SEC, TIMER_IRS);
+    /* Initialize main timer */
+    Timer_Init(TIMER0, TIMER_MATCH0, TIME_15SEC, TIMER_NOP);
+    Timer_Init(TIMER0, TIMER_MATCH1, TIME_5SEC, TIMER_NOP);
 
-    /* Initialize timer 1 (5 seconds timer) */
-    Timer_Init(TIMER1, TIMER_MATCH0, TIME_5SEC, TIMER_IRS);
-
-    /* Initialize RIT */
-    RIT_Init(FREQ_2HZ);
+    /* Initialize blinking timer */
+    Timer_Init(TIMER1, TIMER_MATCH0, FREQ_2HZ, TIMER_INT | TIMER_RST);
 
     /* Run the first state function */
     Run_State[current_state]();

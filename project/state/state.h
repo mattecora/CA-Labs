@@ -3,7 +3,6 @@
 
 #include    "../led/led.h"
 #include    "../timer/timer.h"
-#include    "../rit/rit.h"
 
 /*--------- State-related definitions --------------------------------------*/
 

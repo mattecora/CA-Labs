@@ -473,21 +473,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>rit</GroupName>
-          <Files>
-            <File>
-              <FileName>IRQ_rit.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\rit\IRQ_rit.c</FilePath>
-            </File>
-            <File>
-              <FileName>lib_rit.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\rit\lib_rit.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>state</GroupName>
           <Files>
             <File>
