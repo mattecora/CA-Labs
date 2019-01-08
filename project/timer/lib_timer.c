@@ -8,6 +8,12 @@ IRQn_Type TIMER_IRQn[4] = {TIMER0_IRQn, TIMER1_IRQn, TIMER2_IRQn, TIMER3_IRQn};
 
 void Timer_Init(uint8_t timer_num, uint8_t match_reg, uint32_t timer_interval, uint8_t timer_behavior)
 {
+    /* Power on TIMER2/TIMER3 */
+    if (timer_num == TIMER2 || timer_num == TIMER3)
+    {
+        LPC_SC->PCONP |= 1 << (20 + timer_num);
+    }
+    
     /* Set the match register */
     Timer_SetMR(timer_num, match_reg, timer_interval);
 

@@ -22,7 +22,7 @@ int main(void)
 
     /* Initialize blinking timer */
     Timer_Init(TIMER1, TIMER_MATCH0, FREQ_2HZ, TIMER_INT | TIMER_RST);
-
+    
     /* Run the first state function */
     Run_State[current_state]();
 
