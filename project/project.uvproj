@@ -482,6 +482,66 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>rit</GroupName>
+          <Files>
+            <File>
+              <FileName>IRQ_rit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\rit\IRQ_rit.c</FilePath>
+            </File>
+            <File>
+              <FileName>lib_rit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\rit\lib_rit.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>joystick</GroupName>
+          <Files>
+            <File>
+              <FileName>lib_joystick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\joystick\lib_joystick.c</FilePath>
+            </File>
+            <File>
+              <FileName>func_joystick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\joystick\func_joystick.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>adc</GroupName>
+          <Files>
+            <File>
+              <FileName>IRQ_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\adc\IRQ_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>lib_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\adc\lib_adc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>dac</GroupName>
+          <Files>
+            <File>
+              <FileName>lib_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\dac\lib_dac.c</FilePath>
+            </File>
+            <File>
+              <FileName>func_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\dac\func_dac.c</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
   </Targets>

@@ -11,3 +11,6 @@
 !state/
 !system/
 !timer/
+!adc/
+!dac/
+!joystick/
