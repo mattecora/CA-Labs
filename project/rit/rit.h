@@ -7,6 +7,8 @@
 
 #include    "LPC17xx.h"
 
+#include    "../dac/dac.h"
+
 /*--------- RIT frequency defines ------------------------------------------*/
 
 

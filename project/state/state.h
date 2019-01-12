@@ -13,7 +13,11 @@
 enum        state           {STATE_RG, STATE_RFG, STATE_GR, STATE_YR};
 typedef     enum state      state_t;                /* state_t definition   */
 
-extern      state_t         current_state;          /* Semaphore state      */
+enum        blind           {NO_BLIND, BLIND};
+typedef     enum blind      blind_t;                /* blind_t definition   */
+
+extern      state_t         Current_State;          /* Semaphore state      */
+extern      blind_t         Blind_State;            /* Blind flag           */
 
 /*--------- State handlers -------------------------------------------------*/
 

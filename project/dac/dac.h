@@ -7,6 +7,15 @@
 
 #include    "LPC17xx.h"
 
+/*--------- DAC-related defines --------------------------------------------*/
+
+#define     FREQ_440HZ      0xDDF2                  /* A (440 Hz)           */
+
+#define     VOL_MAX         0x400                   /* Maximum volume       */
+#define     VOL_MIN         0x0                     /* Minimum volume       */
+
+extern      uint16_t        DAC_Volume;             /* Output volume        */
+
 /*--------- lib_dac.c ------------------------------------------------------*/
 
 void        DAC_Init(void);                         /* Initialize the DAC   */
@@ -14,5 +23,6 @@ void        DAC_Init(void);                         /* Initialize the DAC   */
 /*--------- func_dac.c -----------------------------------------------------*/
 
 void        DAC_Out(uint16_t dac_val);              /* Output analog value  */
+void        DAC_Play(void);                         /* Output next sample   */
 
 #endif

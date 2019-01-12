@@ -7,6 +7,7 @@
 
 #include    "LPC17xx.h"
 
+#include    "../dac/dac.h"
 #include    "../state/state.h"
 
 /*--------- Timer index defines --------------------------------------------*/
@@ -39,12 +40,14 @@
 
 #define     TIME_5SEC       0x00BEBC20              /* Divided by 10        */
 #define     TIME_15SEC      3 * TIME_5SEC           /* Divided by 10        */
+#define     FREQ_1HZ        0x002625A0              /* Divided by 10        */
 #define     FREQ_2HZ        0x001312D0              /* Divided by 10        */
 
 #else
 
 #define     TIME_5SEC       0x07735940              /* True value           */
 #define     TIME_15SEC      3 * TIME_5SEC           /* True value           */
+#define     FREQ_1HZ        0x017D7840              /* True value           */
 #define     FREQ_2HZ        0x00BEBC20              /* True value           */
 
 #endif

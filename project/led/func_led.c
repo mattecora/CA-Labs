@@ -6,7 +6,7 @@ void LED_On(uint8_t num)
     LPC_GPIO2->FIOPIN |= 1 << num;
 
     /* Update led_value */
-    led_value = LPC_GPIO2->FIOPIN;
+    LED_Value = LPC_GPIO2->FIOPIN;
 }
 
 void LED_Off(uint8_t num)
@@ -15,7 +15,7 @@ void LED_Off(uint8_t num)
     LPC_GPIO2->FIOPIN &= ~(1 << num);
 
     /* Update led_value */
-    led_value = LPC_GPIO2->FIOPIN;
+    LED_Value = LPC_GPIO2->FIOPIN;
 }
 
 void LED_Out(uint8_t value)
@@ -32,5 +32,5 @@ void LED_Out(uint8_t value)
     }
 
     /* Update led_value */
-    led_value = value;
+    LED_Value = value;
 }

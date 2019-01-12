@@ -18,7 +18,7 @@
 #define     CAR_YELLOW      0x10
 #define     CAR_GREEN       0x08
 
-extern      uint8_t         led_value;              /* Current LED value    */
+extern      uint8_t         LED_Value;              /* Current LED value    */
 
 /*--------- lib_led.c ------------------------------------------------------*/
 

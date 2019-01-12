@@ -9,7 +9,7 @@
 
 /*--------- ADC-related defines --------------------------------------------*/
 
-#define     ADC_POTM_PORT   1 << 5                  /* Potmeter port        */
+#define     ADC_POTM        1 << 5                  /* Potmeter port        */
 
 extern      uint16_t        ADC_Val;                /* Current ADC value    */
 

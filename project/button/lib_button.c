@@ -12,9 +12,9 @@ void Button_Init(uint8_t keys)
     
     /* Enable the interrupt handlers */
     if (keys & BUTTON_INT0)
-        NVIC_EnableIRQ(EINT2_IRQn);
+        NVIC_EnableIRQ(EINT0_IRQn);
     if (keys & BUTTON_KEY1)
         NVIC_EnableIRQ(EINT1_IRQn);
     if (keys & BUTTON_KEY2)
-        NVIC_EnableIRQ(EINT0_IRQn);
+        NVIC_EnableIRQ(EINT2_IRQn);
 }

@@ -3,6 +3,8 @@
 #include "../led/led.h"
 #include "../button/button.h"
 #include "../timer/timer.h"
+#include "../adc/adc.h"
+#include "../dac/dac.h"
 
 #include "../state/state.h"
 
@@ -21,10 +23,28 @@ int main(void)
     Timer_Init(TIMER0, TIMER_MATCH1, TIME_5SEC, TIMER_NOP);
 
     /* Initialize blinking timer */
-    Timer_Init(TIMER1, TIMER_MATCH0, FREQ_2HZ, TIMER_INT | TIMER_RST);
+    Timer_Init(TIMER1, TIMER_MATCH0, FREQ_1HZ, TIMER_NOP);
+    Timer_Init(TIMER1, TIMER_MATCH1, FREQ_2HZ, TIMER_NOP);
+    
+    /* Initialize play timer */
+    Timer_Init(TIMER2, TIMER_MATCH0, FREQ_440HZ, TIMER_INT | TIMER_RST);
+    
+    /* Initialize ADC */
+    ADC_Init(ADC_POTM);
+    
+    /* Initialize DAC */
+    DAC_Init();
+    
+    /* Set interrupt priorities */
+    NVIC_SetPriority(TIMER2_IRQn, 0);
+    NVIC_SetPriority(EINT0_IRQn, 1);
+    NVIC_SetPriority(EINT1_IRQn, 1);
+    NVIC_SetPriority(EINT2_IRQn, 1);
+    NVIC_SetPriority(TIMER0_IRQn, 2);
+    NVIC_SetPriority(TIMER1_IRQn, 2);
     
     /* Run the first state function */
-    Run_State[current_state]();
+    Run_State[Current_State]();
 
     while (1)
     {
