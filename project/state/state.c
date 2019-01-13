@@ -3,23 +3,17 @@
 /* Set the semaphore initial state */
 state_t Current_State = STATE_RG;
 
-/* Set the blind flg */
+/* Set the blind flag */
 blind_t Blind_State = NO_BLIND;
+
+/* Set the maintenance flag */
+maint_t Maint_State = NO_MAINT; 
 
 /* Set the vector of state handlers */
 void (*Run_State[4])(void) = {Run_State0, Run_State1, Run_State2, Run_State3};
 
 void Run_State0(void)
 {
-    if (Current_State == STATE_RFG)
-    {
-        /* Reset the blinking timer (if coming from STATE_RFG) */
-        Timer_Reset(TIMER1);
-
-        /* Reset the main timer (if coming from STATE_RFG) */
-        Timer_Reset(TIMER0);
-    }
-    
     /* Set the current state */
     Current_State = STATE_RG;
 
@@ -39,12 +33,24 @@ void Run_State0(void)
     
     /* Start the blinking timer */
     Timer_Start(TIMER1);
+    
+    /* Start the RIT for maintenance mode */
+    RIT_Enable();
 }
 
 void Run_State1(void)
 {
+    /* Stop the RIT */
+    RIT_Disable();
+    
     /* Reset the blinking timer */
     Timer_Reset(TIMER1);
+    
+    /* Stop the play timer */
+    Timer_Reset(TIMER2);
+    
+    /* Reset the DAC output */
+    DAC_Out(0);
     
     /* Set the current state */
     Current_State = STATE_RFG;
@@ -72,8 +78,11 @@ void Run_State2(void)
     /* Reset the blinking timer */
     Timer_Reset(TIMER1);
     
-    /* Reset the play timer */
+    /* Stop the play timer */
     Timer_Reset(TIMER2);
+    
+    /* Reset the DAC output */
+    DAC_Out(0);
     
     /* Set the current state */
     Current_State = STATE_GR;
@@ -95,6 +104,37 @@ void Run_State3(void)
 
     /* Start the main timer */
     Timer_Start(TIMER0);
+}
+
+void Run_Maint(void)
+{
+    /* Stop the play timer */
+    Timer_Reset(TIMER2);
     
-    /* Start the blinking timer */
+    /* Reset the DAC output */
+    DAC_Out(0);
+    
+    /* Reset timers */
+    Timer_Reset(TIMER0);
+    
+    /* Set maintenance flag */
+    Maint_State = MAINT;
+    
+    /* Set the semaphore lights */
+    LED_Out(CAR_YELLOW | PED_RED);
+    
+    /* Start ADC conversion */
+    ADC_Start();
+}
+
+void Run_NoMaint(void)
+{   
+    /* Stop ADC conversion */
+    ADC_Stop();
+    
+    /* Reset maintenance flag */
+    Maint_State = NO_MAINT;
+    
+    /* Return to the initial state */
+    Run_State[STATE_RG]();
 }

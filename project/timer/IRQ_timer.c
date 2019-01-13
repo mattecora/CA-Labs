@@ -10,36 +10,34 @@ void TIMER0_IRQHandler(void)
 }
 
 void TIMER1_IRQHandler(void)
-{
-    static uint8_t playing = 0;
-    
-    /* If in flashing green state, toggle LED state */
-    if (Current_State == STATE_RFG)
+{   
+    /* Maintenance state */
+    if (Maint_State == MAINT)
     {
-        if (LED_Value == (CAR_RED | PED_GREEN))
+        /* Toggle LEDs state */
+        if (LED_Value == (CAR_YELLOW | PED_RED))
         {
             /* Turn off if on */
-            LED_Out(CAR_RED);
+            LED_Out(LED_NONE);
         }
-        else if (LED_Value == CAR_RED)
+        else if (LED_Value == LED_NONE)
         {
             /* Turn on if off */
-            LED_Out(CAR_RED | PED_GREEN);
+            LED_Out(CAR_YELLOW | PED_RED);
         }
     }
     
-    /* If in blind mode, start/stop sound */
-    if (Blind_State == BLIND)
+    /* Green state */
+    else if (Current_State == STATE_RG && Blind_State == BLIND)
     {
-        if (playing)
+        /* Check whether the play timer is running */
+        if (LPC_TIM2->TCR != 1)
         {
             /* Play first sample */
             DAC_Play();
             
             /* Start the play timer */
             Timer_Start(TIMER2);
-            
-            playing = 0;
         }
         else
         {
@@ -48,8 +46,39 @@ void TIMER1_IRQHandler(void)
             
             /* Reset the DAC output */
             DAC_Out(0);
+        }
+    }
+    
+    /* Flashing green state */
+    else if (Current_State == STATE_RFG)
+    {
+        if (LED_Value == (CAR_RED | PED_GREEN))
+        {
+            /* Turn off the LED if on */
+            LED_Out(CAR_RED);
             
-            playing = 1;
+            if (Blind_State == BLIND)
+            {
+                /* Stop the play timer */
+                Timer_Reset(TIMER2);
+                
+                /* Reset the DAC output */
+                DAC_Out(0);
+            }
+        }
+        else if (LED_Value == CAR_RED)
+        {
+            /* Turn on if off */
+            LED_Out(CAR_RED | PED_GREEN);
+            
+            if (Blind_State == BLIND)
+            {
+                /* Play first sample */
+                DAC_Play();
+                
+                /* Start the play timer */
+                Timer_Start(TIMER2);
+            }
         }
     }
 

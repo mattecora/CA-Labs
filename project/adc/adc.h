@@ -7,9 +7,14 @@
 
 #include    "LPC17xx.h"
 
+#include    "../dac/dac.h"
+
 /*--------- ADC-related defines --------------------------------------------*/
 
 #define     ADC_POTM        1 << 5                  /* Potmeter port        */
+
+#define     ADC_MIN         0                       /* Minimum ADC value    */
+#define     ADC_MAX         0xFFF                   /* Maximum ADC value    */
 
 extern      uint16_t        ADC_Val;                /* Current ADC value    */
 

@@ -7,6 +7,7 @@
 
 #include    "LPC17xx.h"
 
+#include    "../led/led.h"
 #include    "../dac/dac.h"
 #include    "../state/state.h"
 

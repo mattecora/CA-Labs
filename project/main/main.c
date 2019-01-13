@@ -3,6 +3,8 @@
 #include "../led/led.h"
 #include "../button/button.h"
 #include "../timer/timer.h"
+#include "../rit/rit.h"
+#include "../joystick/joystick.h"
 #include "../adc/adc.h"
 #include "../dac/dac.h"
 
@@ -29,6 +31,12 @@ int main(void)
     /* Initialize play timer */
     Timer_Init(TIMER2, TIMER_MATCH0, FREQ_440HZ, TIMER_INT | TIMER_RST);
     
+    /* Initialize RIT */
+    RIT_Init(TIME_50MS);
+    
+    /* Initialize joystick */
+    Joystick_Init();
+    
     /* Initialize ADC */
     ADC_Init(ADC_POTM);
     
@@ -42,6 +50,8 @@ int main(void)
     NVIC_SetPriority(EINT2_IRQn, 1);
     NVIC_SetPriority(TIMER0_IRQn, 2);
     NVIC_SetPriority(TIMER1_IRQn, 2);
+    NVIC_SetPriority(RIT_IRQn, 2);
+    NVIC_SetPriority(ADC_IRQn, 3);
     
     /* Run the first state function */
     Run_State[Current_State]();

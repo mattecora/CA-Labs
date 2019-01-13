@@ -7,7 +7,7 @@ uint8_t Joystick_Get(void)
     /* Poll all the joystick directions */
     for (i = JOY_SEL; i <= JOY_UP; i++)
     {
-        if (LPC_GPIO1->FIOPIN & (1 << (25 + i)))
+        if (!(LPC_GPIO1->FIOPIN & (1 << (25 + i))))
             return i;
 	}
 	

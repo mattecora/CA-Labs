@@ -7,11 +7,19 @@
 
 #include    "LPC17xx.h"
 
-#include    "../dac/dac.h"
+#include    "../joystick/joystick.h"
+#include    "../adc/adc.h"
+#include    "../state/state.h"
 
 /*--------- RIT frequency defines ------------------------------------------*/
 
+#define     DEBUG                                   /* Delete for real vals */
 
+#ifdef      DEBUG
+#define     TIME_50MS       0x0001E848              /* Divided by 10        */
+#else
+#define     TIME_50MS       0x001312D0              /* True value           */
+#endif
 
 /*--------- lib_rit.c ------------------------------------------------------*/
 

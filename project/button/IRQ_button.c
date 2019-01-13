@@ -7,10 +7,18 @@ void Handle_Req(void)
     case STATE_RG:
         /* Reset the main timer */
         Timer_Reset(TIMER0);
+    
+        /* Start the main timer */
         Timer_Start(TIMER0);
         break;
 
     case STATE_RFG:
+        /* Reset the blink timer */
+        Timer_Reset(TIMER1);
+    
+        /* Reset the main timer */
+        Timer_Reset(TIMER0);
+    
         /* Switch to the previous state */
         Run_State[STATE_RG]();
         break;

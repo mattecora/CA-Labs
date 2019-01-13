@@ -7,12 +7,14 @@
 
 #include    "LPC17xx.h"
 
+#include    "../adc/adc.h"
+
 /*--------- DAC-related defines --------------------------------------------*/
 
-#define     FREQ_440HZ      0xDDF2                  /* A (440 Hz)           */
+#define     FREQ_440HZ      0x377                   /* A (440 Hz)           */
 
-#define     VOL_MAX         0x400                   /* Maximum volume       */
-#define     VOL_MIN         0x0                     /* Minimum volume       */
+#define     VOL_MAX         ADC_MAX                 /* Maximum volume       */
+#define     VOL_MIN         ADC_MIN                 /* Minimum volume       */
 
 extern      uint16_t        DAC_Volume;             /* Output volume        */
 
