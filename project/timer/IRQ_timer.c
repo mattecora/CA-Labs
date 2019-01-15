@@ -42,8 +42,8 @@ void TIMER1_IRQHandler(void)
     /* Green state */
     else if (Current_State == STATE_RG && Blind_State == BLIND)
     {
-        /* Check whether the play timer is running */
-        if (LPC_TIM2->TCR != 1)
+        /* Check whether the play timer is running and blind button is not pressed */
+        if (LPC_TIM2->TCR != 1 && (LPC_PINCON->PINSEL4 & (1 << 20)) != 0)
         {
             /* Play first sample */
             DAC_Play();
@@ -51,7 +51,7 @@ void TIMER1_IRQHandler(void)
             /* Start the play timer */
             Timer_Start(TIMER2);
         }
-        else
+        else if (LPC_TIM2->TCR == 1 && (LPC_PINCON->PINSEL4 & (1 << 20)) != 0)
         {
             /* Stop the play timer */
             Timer_Reset(TIMER2);
@@ -69,7 +69,8 @@ void TIMER1_IRQHandler(void)
             /* Turn off the LED if on */
             LED_Out(CAR_RED);
             
-            if (Blind_State == BLIND)
+            /* Play if blind and blind button is not pressed */
+            if (Blind_State == BLIND && (LPC_PINCON->PINSEL4 & (1 << 20)) != 0)
             {
                 /* Stop the play timer */
                 Timer_Reset(TIMER2);
@@ -83,7 +84,8 @@ void TIMER1_IRQHandler(void)
             /* Turn on if off */
             LED_Out(CAR_RED | PED_GREEN);
             
-            if (Blind_State == BLIND)
+            /* Stop playing if blind and blind button is not pressed */
+            if (Blind_State == BLIND && (LPC_PINCON->PINSEL4 & (1 << 20)) != 0)
             {
                 /* Play first sample */
                 DAC_Play();

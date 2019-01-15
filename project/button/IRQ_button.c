@@ -8,9 +8,6 @@ void EINT0_IRQHandler(void)
     /* Disable the main timer */
     Timer_Stop(TIMER0);
     
-    /* Disable the blinking timer */
-    Timer_Stop(TIMER1);
-    
     /* Disable the maintenance timer */
     Timer_Stop(TIMER3);
     
@@ -35,17 +32,8 @@ void EINT1_IRQHandler(void)
     /* Disable the main timer */
     Timer_Stop(TIMER0);
     
-    /* Disable the blinking timer */
-    Timer_Stop(TIMER1);
-    
     /* Disable the maintenance timer */
     Timer_Stop(TIMER3);
-    
-    /* Reset the play timer */
-    Timer_Reset(TIMER2);
-    
-    /* Reset the DAC output */
-    DAC_Out(0);
     
     /* Switch to GPIO mode */
     LPC_PINCON->PINSEL4 &= ~(1 << 22);
@@ -62,17 +50,8 @@ void EINT2_IRQHandler(void)
     /* Disable the main timer */
     Timer_Stop(TIMER0);
     
-    /* Disable the blinking timer */
-    Timer_Stop(TIMER1);
-    
     /* Disable the maintenance timer */
     Timer_Stop(TIMER3);
-    
-    /* Reset the play timer */
-    Timer_Reset(TIMER2);
-    
-    /* Reset the DAC output */
-    DAC_Out(0);
     
     /* Switch to GPIO mode */
     LPC_PINCON->PINSEL4 &= ~(1 << 24);
