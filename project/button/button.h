@@ -7,9 +7,7 @@
 
 #include    "LPC17xx.h"
 
-#include    "../timer/timer.h"
-#include    "../dac/dac.h"
-#include    "../state/state.h"
+#include    "../rit/rit.h"
 
 /*--------- Button keys defines --------------------------------------------*/
 

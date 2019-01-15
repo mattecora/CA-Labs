@@ -1,39 +1,5 @@
 #include "button.h"
 
-void Handle_Req(void)
-{
-    switch (Current_State)
-    {
-    case STATE_RG:
-        /* Reset the main timer */
-        Timer_Reset(TIMER0);
-    
-        /* Start the main timer */
-        Timer_Start(TIMER0);
-        break;
-
-    case STATE_RFG:
-        /* Reset the blink timer */
-        Timer_Reset(TIMER1);
-    
-        /* Reset the main timer */
-        Timer_Reset(TIMER0);
-    
-        /* Switch to the previous state */
-        Run_State[STATE_RG]();
-        break;
-
-    case STATE_GR:
-        /* Start the main timer */
-        Timer_Start(TIMER0);
-        break;
-
-    case STATE_YR:
-        /* Nop */
-        break;
-    }
-}
-
 void EINT0_IRQHandler(void)
 {
     /* Set the blind state */
@@ -45,23 +11,16 @@ void EINT0_IRQHandler(void)
     /* Start the play timer */
     Timer_Start(TIMER2);
     
-    /* Handle pedestrian request */
-    Handle_Req();
+    /* Disable active timers */
+    Timer_Stop(TIMER0);
+    Timer_Stop(TIMER1);
     
     /* Switch to GPIO mode */
     LPC_PINCON->PINSEL4 &= ~(1 << 20);
     
-    /* Stop until the button is pressed */
-    while (!(LPC_GPIO2->FIOPIN & (1 << 10)));
-    
-    /* Switch back to interrupt mode */
-    LPC_PINCON->PINSEL4 |= 1 << 20;
-    
-    /* Reset the play timer */
-    Timer_Reset(TIMER2);
-    
-    /* Reset the DAC output */
-    DAC_Out(0);
+    /* Start the RIT */
+    Pressed_Button = 0;
+    RIT_Enable();
     
     /* Clear pending interrupt */
     LPC_SC->EXTINT &= (1 << 0);
@@ -69,8 +28,16 @@ void EINT0_IRQHandler(void)
 
 void EINT1_IRQHandler(void)
 {
-    /* Handle pedestrian request */
-    Handle_Req();
+    /* Switch to GPIO mode */
+    LPC_PINCON->PINSEL4 &= ~(1 << 22);
+    
+    /* Disable active timers */
+    Timer_Stop(TIMER0);
+    Timer_Stop(TIMER1);
+    
+    /* Start the RIT */
+    Pressed_Button = 1;
+    RIT_Enable();
 
     /* Clear pending interrupt */
     LPC_SC->EXTINT &= (1 << 1);
@@ -78,8 +45,16 @@ void EINT1_IRQHandler(void)
 
 void EINT2_IRQHandler(void)
 {
-    /* Handle pedestrian request */
-    Handle_Req();
+    /* Switch to GPIO mode */
+    LPC_PINCON->PINSEL4 &= ~(1 << 24);
+    
+    /* Disable active timers */
+    Timer_Stop(TIMER0);
+    Timer_Stop(TIMER1);
+    
+    /* Start the RIT */
+    Pressed_Button = 2;
+    RIT_Enable();
 
     /* Clear pending interrupt */
     LPC_SC->EXTINT &= (1 << 2);

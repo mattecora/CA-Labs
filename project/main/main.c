@@ -51,9 +51,9 @@ int main(void)
     NVIC_SetPriority(EINT0_IRQn, 1);
     NVIC_SetPriority(EINT1_IRQn, 1);
     NVIC_SetPriority(EINT2_IRQn, 1);
+    NVIC_SetPriority(RIT_IRQn, 1);
     NVIC_SetPriority(TIMER0_IRQn, 2);
     NVIC_SetPriority(TIMER1_IRQn, 2);
-    NVIC_SetPriority(RIT_IRQn, 2);
     NVIC_SetPriority(ADC_IRQn, 3);
     
     /* Run the first state function */

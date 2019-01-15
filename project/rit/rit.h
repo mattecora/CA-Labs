@@ -7,13 +7,13 @@
 
 #include    "LPC17xx.h"
 
-#include    "../joystick/joystick.h"
-#include    "../adc/adc.h"
+#include    "../timer/timer.h"
+#include    "../dac/dac.h"
 #include    "../state/state.h"
 
-/*--------- RIT frequency defines ------------------------------------------*/
+/*--------- RIT defines ----------------------------------------------------*/
 
-
+extern      uint8_t         Pressed_Button;         /* Pressed button       */
 
 /*--------- lib_rit.c ------------------------------------------------------*/
 
