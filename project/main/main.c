@@ -31,6 +31,9 @@ int main(void)
     /* Initialize play timer */
     Timer_Init(TIMER2, TIMER_MATCH0, FREQ_440HZ, TIMER_INT | TIMER_RST);
     
+    /* Initialize maintenance timer */
+    Timer_Init(TIMER3, TIMER_MATCH0, TIME_50MS, TIMER_INT | TIMER_RST);
+    
     /* Initialize RIT */
     RIT_Init(TIME_50MS);
     

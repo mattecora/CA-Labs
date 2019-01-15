@@ -19,11 +19,23 @@ void TIMER1_IRQHandler(void)
         {
             /* Turn off if on */
             LED_Out(LED_NONE);
+            
+            /* Stop the play timer */
+            Timer_Reset(TIMER2);
+            
+            /* Reset the DAC output */
+            DAC_Out(0);
         }
         else if (LED_Value == LED_NONE)
         {
             /* Turn on if off */
             LED_Out(CAR_YELLOW | PED_RED);
+            
+            /* Play first sample */
+            DAC_Play();
+            
+            /* Start the play timer */
+            Timer_Start(TIMER2);
         }
     }
     
@@ -97,6 +109,31 @@ void TIMER2_IRQHandler(void)
 
 void TIMER3_IRQHandler(void)
 {
+    uint8_t joy_val;
+    
+    /* Poll joystick value */
+    joy_val = Joystick_Get();
+    
+    if (Maint_State == NO_MAINT && joy_val == JOY_RIGHT)
+    {
+        /* Enter maintenance mode */
+        Run_Maint();
+    }
+    
+    if (Maint_State == MAINT)
+    {
+        if (joy_val == JOY_LEFT)
+        {
+            /* Exit maintenance mode */
+            Run_NoMaint();
+        }
+        else
+        {
+            /* Read next ADC value */
+            ADC_Start();
+        }
+    }
+    
     /* Clear interrupt flags */
     LPC_TIM3->IR = 7;
 }

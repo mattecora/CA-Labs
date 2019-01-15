@@ -34,20 +34,20 @@ void Run_State0(void)
     /* Start the blinking timer */
     Timer_Start(TIMER1);
     
-    /* Start the RIT for maintenance mode */
-    RIT_Enable();
+    /* Start the maintenance timer */
+    Timer_Start(TIMER3);
 }
 
 void Run_State1(void)
-{
-    /* Stop the RIT */
-    RIT_Disable();
-    
+{   
     /* Reset the blinking timer */
     Timer_Reset(TIMER1);
     
     /* Stop the play timer */
     Timer_Reset(TIMER2);
+    
+    /* Reset the maintenance timer */
+    Timer_Reset(TIMER3);
     
     /* Reset the DAC output */
     DAC_Out(0);
@@ -108,13 +108,7 @@ void Run_State3(void)
 
 void Run_Maint(void)
 {
-    /* Stop the play timer */
-    Timer_Reset(TIMER2);
-    
-    /* Reset the DAC output */
-    DAC_Out(0);
-    
-    /* Reset timers */
+    /* Reset main timer */
     Timer_Reset(TIMER0);
     
     /* Set maintenance flag */
@@ -122,6 +116,16 @@ void Run_Maint(void)
     
     /* Set the semaphore lights */
     LED_Out(CAR_YELLOW | PED_RED);
+    
+    /* Start playing if not blind */
+    if (Blind_State == NO_BLIND)
+    {
+        /* Play first sample */
+        DAC_Play();
+        
+        /* Start the play timer */
+        Timer_Start(TIMER2);
+    }
     
     /* Start ADC conversion */
     ADC_Start();
@@ -134,6 +138,16 @@ void Run_NoMaint(void)
     
     /* Reset maintenance flag */
     Maint_State = NO_MAINT;
+    
+    /* Stop playing if not blind */
+    if (Blind_State == NO_BLIND)
+    {
+        /* Stop the play timer */
+        Timer_Reset(TIMER2);
+        
+        /* Reset the DAC output */
+        DAC_Out(0);
+    }
     
     /* Return to the initial state */
     Run_State[STATE_RG]();

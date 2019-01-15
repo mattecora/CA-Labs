@@ -8,6 +8,7 @@
 #include    "LPC17xx.h"
 
 #include    "../led/led.h"
+#include    "../joystick/joystick.h"
 #include    "../dac/dac.h"
 #include    "../state/state.h"
 
@@ -43,6 +44,7 @@
 #define     TIME_15SEC      3 * TIME_5SEC           /* Divided by 10        */
 #define     FREQ_1HZ        0x002625A0              /* Divided by 10        */
 #define     FREQ_2HZ        0x001312D0              /* Divided by 10        */
+#define     TIME_50MS       0x0001E848              /* Divided by 10        */
 
 #else
 
@@ -50,6 +52,7 @@
 #define     TIME_15SEC      3 * TIME_5SEC           /* True value           */
 #define     FREQ_1HZ        0x017D7840              /* True value           */
 #define     FREQ_2HZ        0x00BEBC20              /* True value           */
+#define     TIME_50MS       0x001312D0              /* True value           */
 
 #endif
 
