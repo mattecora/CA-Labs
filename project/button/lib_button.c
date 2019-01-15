@@ -10,6 +10,9 @@ void Button_Init(uint8_t keys)
     /* Set direction to input on selected keys (P2.10, P2.11, P2.12) */
     LPC_GPIO2->FIODIR &= ~(keys << 10);
     
+    /* Set to edge-sensitive mode interrupts */
+    LPC_SC->EXTMODE = 0x7;
+    
     /* Enable the interrupt handlers */
     if (keys & BUTTON_INT0)
         NVIC_EnableIRQ(EINT0_IRQn);

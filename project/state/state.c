@@ -14,6 +14,9 @@ void (*Run_State[4])(void) = {Run_State0, Run_State1, Run_State2, Run_State3};
 
 void Run_State0(void)
 {
+    /* Reset the main timer */
+    Timer_Reset(TIMER0);
+    
     /* Set the current state */
     Current_State = STATE_RG;
 
@@ -39,11 +42,14 @@ void Run_State0(void)
 }
 
 void Run_State1(void)
-{   
+{
+    /* Reset the main timer */
+    Timer_Reset(TIMER0);
+    
     /* Reset the blinking timer */
     Timer_Reset(TIMER1);
     
-    /* Stop the play timer */
+    /* Reset the play timer */
     Timer_Reset(TIMER2);
     
     /* Reset the maintenance timer */
@@ -75,6 +81,9 @@ void Run_State1(void)
 
 void Run_State2(void)
 {
+    /* Reset the main timer */
+    Timer_Reset(TIMER0);
+    
     /* Reset the blinking timer */
     Timer_Reset(TIMER1);
     
@@ -96,6 +105,9 @@ void Run_State2(void)
 
 void Run_State3(void)
 {
+    /* Reset the main timer */
+    Timer_Reset(TIMER0);
+    
     /* Set the current state */
     Current_State = STATE_YR;
 
@@ -108,7 +120,7 @@ void Run_State3(void)
 
 void Run_Maint(void)
 {
-    /* Reset main timer */
+    /* Reset the main timer */
     Timer_Reset(TIMER0);
     
     /* Set maintenance flag */
