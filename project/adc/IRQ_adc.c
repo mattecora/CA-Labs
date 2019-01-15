@@ -6,5 +6,5 @@ void ADC_IRQHandler(void)
     ADC_Val = ((LPC_ADC->ADGDR >> 4) & 0xFFF);
     
     /* Set the DAC volume */
-    DAC_Volume = ADC_Val;
+    DAC_Volume = 0xFFF - ADC_Val;
 }

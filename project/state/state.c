@@ -123,6 +123,11 @@ void Run_Maint(void)
     /* Reset the main timer */
     Timer_Reset(TIMER0);
     
+    /* Disable interrupts from buttons */
+    NVIC_DisableIRQ(EINT0_IRQn);
+    NVIC_DisableIRQ(EINT1_IRQn);
+    NVIC_DisableIRQ(EINT2_IRQn);
+    
     /* Set maintenance flag */
     Maint_State = MAINT;
     
@@ -160,6 +165,11 @@ void Run_NoMaint(void)
         /* Reset the DAC output */
         DAC_Out(0);
     }
+    
+    /* Enable interrupts for buttons */
+    NVIC_EnableIRQ(EINT0_IRQn);
+    NVIC_EnableIRQ(EINT1_IRQn);
+    NVIC_EnableIRQ(EINT2_IRQn);
     
     /* Return to the initial state */
     Run_State[STATE_RG]();
