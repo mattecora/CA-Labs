@@ -87,7 +87,7 @@ void Run_State2(void)
     /* Reset the blinking timer */
     Timer_Reset(TIMER1);
     
-    /* Stop the play timer */
+    /* Reset the play timer */
     Timer_Reset(TIMER2);
     
     /* Reset the DAC output */

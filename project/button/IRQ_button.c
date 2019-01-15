@@ -5,39 +5,53 @@ void EINT0_IRQHandler(void)
     /* Set the blind state */
     Blind_State = BLIND;
     
+    /* Disable the main timer */
+    Timer_Stop(TIMER0);
+    
+    /* Disable the blinking timer */
+    Timer_Stop(TIMER1);
+    
+    /* Disable the maintenance timer */
+    Timer_Stop(TIMER3);
+    
     /* Play first sample */
     DAC_Play();
     
     /* Start the play timer */
     Timer_Start(TIMER2);
     
-    /* Disable active timers */
-    Timer_Stop(TIMER0);
-    Timer_Stop(TIMER1);
-    
     /* Switch to GPIO mode */
     LPC_PINCON->PINSEL4 &= ~(1 << 20);
     
     /* Start the RIT */
-    Pressed_Button = 0;
-    RIT_Enable();
+    RIT_Debounce(BUTTON_INT0);
     
     /* Clear pending interrupt */
     LPC_SC->EXTINT &= (1 << 0);
 }
 
 void EINT1_IRQHandler(void)
-{
+{   
+    /* Disable the main timer */
+    Timer_Stop(TIMER0);
+    
+    /* Disable the blinking timer */
+    Timer_Stop(TIMER1);
+    
+    /* Disable the maintenance timer */
+    Timer_Stop(TIMER3);
+    
+    /* Reset the play timer */
+    Timer_Reset(TIMER2);
+    
+    /* Reset the DAC output */
+    DAC_Out(0);
+    
     /* Switch to GPIO mode */
     LPC_PINCON->PINSEL4 &= ~(1 << 22);
     
-    /* Disable active timers */
-    Timer_Stop(TIMER0);
-    Timer_Stop(TIMER1);
-    
     /* Start the RIT */
-    Pressed_Button = 1;
-    RIT_Enable();
+    RIT_Debounce(BUTTON_KEY1);
 
     /* Clear pending interrupt */
     LPC_SC->EXTINT &= (1 << 1);
@@ -45,16 +59,26 @@ void EINT1_IRQHandler(void)
 
 void EINT2_IRQHandler(void)
 {
+    /* Disable the main timer */
+    Timer_Stop(TIMER0);
+    
+    /* Disable the blinking timer */
+    Timer_Stop(TIMER1);
+    
+    /* Disable the maintenance timer */
+    Timer_Stop(TIMER3);
+    
+    /* Reset the play timer */
+    Timer_Reset(TIMER2);
+    
+    /* Reset the DAC output */
+    DAC_Out(0);
+    
     /* Switch to GPIO mode */
     LPC_PINCON->PINSEL4 &= ~(1 << 24);
     
-    /* Disable active timers */
-    Timer_Stop(TIMER0);
-    Timer_Stop(TIMER1);
-    
     /* Start the RIT */
-    Pressed_Button = 2;
-    RIT_Enable();
+    RIT_Debounce(BUTTON_KEY2);
 
     /* Clear pending interrupt */
     LPC_SC->EXTINT &= (1 << 2);

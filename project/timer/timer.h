@@ -36,6 +36,8 @@
 
 /*--------- Timer interval defines -----------------------------------------*/
 
+#define     DEBUG
+
 #ifdef      DEBUG
 
 #define     TIME_5SEC       0x00BEBC20              /* Divided by 10        */

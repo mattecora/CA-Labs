@@ -35,3 +35,12 @@ void RIT_Reset(void)
     /* Reset counter */
     LPC_RIT->RICOUNTER = 0;
 }
+
+void RIT_Debounce(uint8_t key)
+{
+    /* Set the key to debounce */
+    Debounce_Key = key;
+    
+    /* Start the RIT */
+    RIT_Enable();
+}
