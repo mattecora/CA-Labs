@@ -4,6 +4,7 @@
 !*.uvproj
 !*.c
 !*.h
+!*.pdf
 !button/
 !led/
 !main/
