@@ -1,7 +1,7 @@
 #include "rit.h"
 
 /* Button to debounce */
-uint8_t Debounce_Key;
+uint8_t Debounce_Key = BUTTON_NONE;
 
 void Handle_Req(void)
 {
@@ -39,42 +39,60 @@ void Handle_Req(void)
 
 void RIT_IRQHandler(void)
 {
-    /* Check button status */
-    if ((LPC_GPIO2->FIOPIN & (Debounce_Key << 10)) == 0)
+    static int down[3] = {0};
+    int i;
+    
+    for (i = 0; i < 3; i++)
     {
-        /* Handle pedestrian request */
-        Handle_Req();
-    }
-    else
-    {
-        /* Button has been released */
-        if (Debounce_Key == BUTTON_INT0)
-        {            
-            /* Reset the play timer */
-            Timer_Reset(TIMER2);
-            
-            /* Reset the DAC output */
-            DAC_Out(0);
+        /* Check if the key should be debounced */
+        if (Debounce_Key & (1 << i))
+        {
+            /* Check button status */
+            if ((LPC_GPIO2->FIOPIN & (1 << (10 + i))) == 0)
+            {
+                if (down[i] == 0)
+                {
+                    /* Handle pedestrian request */
+                    Handle_Req();
+                }
+                
+                /* Button is pressed */
+                down[i] = 1;
+            }
+            else
+            {
+                /* Button has been released */
+                down[i] = 0;
+                
+                /* Stop playing if blind */
+                if (i == 0)
+                {            
+                    /* Reset the play timer */
+                    Timer_Reset(TIMER2);
+                    
+                    /* Reset the DAC output */
+                    DAC_Out(0);
+                }
+                
+                /* Remove from the debounce keys */
+                Debounce_Key &= ~(1 << i);
+                
+                /* Switch back to interrupt mode */
+                LPC_PINCON->PINSEL4 |= 1 << (20 + 2*i);
+            }
         }
-        
+    }
+    
+    /* Check if there are still buttons to debounce */
+    if (Debounce_Key == 0)
+    {
         /* Disable and reset the RIT */
         RIT_Disable();
         RIT_Reset();
         
-        /* Restart the main timer */
-        Timer_Start(TIMER0);
-        
-        /* Restart the blinking timer */
-        Timer_Start(TIMER1);
-        
         /* Restart the maintenance timer */
         if (Current_State == STATE_RG)
             Timer_Start(TIMER3);
-        
-        /* Switch back to interrupt mode */
-        LPC_PINCON->PINSEL4 |= ((Debounce_Key & BUTTON_INT0) | 
-                           ((Debounce_Key & BUTTON_KEY1) << 1) | 
-                           ((Debounce_Key & BUTTON_KEY2) << 2)) << 20;
     }
     
     /* Clear interrupt flag */

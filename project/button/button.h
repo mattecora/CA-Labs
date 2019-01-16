@@ -11,6 +11,7 @@
 
 /*--------- Button keys defines --------------------------------------------*/
 
+#define     BUTTON_NONE     0
 #define     BUTTON_INT0     1
 #define     BUTTON_KEY1     2
 #define     BUTTON_KEY2     4

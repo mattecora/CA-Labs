@@ -40,16 +40,16 @@
 
 #ifdef      DEBUG
 
+#define     TIME_15SEC      0x023C3460              /* Divided by 10        */
 #define     TIME_5SEC       0x00BEBC20              /* Divided by 10        */
-#define     TIME_15SEC      3 * TIME_5SEC           /* Divided by 10        */
 #define     FREQ_1HZ        0x002625A0              /* Divided by 10        */
 #define     FREQ_2HZ        0x001312D0              /* Divided by 10        */
 #define     TIME_50MS       0x0001E848              /* Divided by 10        */
 
 #else
 
+#define     TIME_15SEC      0x165A0BC0              /* True value           */
 #define     TIME_5SEC       0x07735940              /* True value           */
-#define     TIME_15SEC      3 * TIME_5SEC           /* True value           */
 #define     FREQ_1HZ        0x017D7840              /* True value           */
 #define     FREQ_2HZ        0x00BEBC20              /* True value           */
 #define     TIME_50MS       0x001312D0              /* True value           */

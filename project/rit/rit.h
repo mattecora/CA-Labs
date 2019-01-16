@@ -14,6 +14,14 @@
 
 /*--------- RIT defines ----------------------------------------------------*/
 
+#define     DEBUG
+
+#ifdef      DEBUG
+#define     TIME_50MS       0x0001E848              /* Divided by 10        */
+#else
+#define     TIME_50MS       0x001312D0              /* True value           */
+#endif
+
 extern      uint8_t         Debounce_Key;           /* Button to debounce   */
 
 /*--------- lib_rit.c ------------------------------------------------------*/
