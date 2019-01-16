@@ -5,9 +5,6 @@ void EINT0_IRQHandler(void)
     /* Set the blind state */
     Blind_State = BLIND;
     
-    /* Disable the main timer */
-    Timer_Stop(TIMER0);
-    
     /* Disable the maintenance timer */
     Timer_Stop(TIMER3);
     
@@ -29,9 +26,6 @@ void EINT0_IRQHandler(void)
 
 void EINT1_IRQHandler(void)
 {   
-    /* Disable the main timer */
-    Timer_Stop(TIMER0);
-    
     /* Disable the maintenance timer */
     Timer_Stop(TIMER3);
     
@@ -47,9 +41,6 @@ void EINT1_IRQHandler(void)
 
 void EINT2_IRQHandler(void)
 {
-    /* Disable the main timer */
-    Timer_Stop(TIMER0);
-    
     /* Disable the maintenance timer */
     Timer_Stop(TIMER3);
     

@@ -39,35 +39,23 @@ void Handle_Req(void)
 
 void RIT_IRQHandler(void)
 {
-    static int down = 0;
-    
     /* Check button status */
     if ((LPC_GPIO2->FIOPIN & (Debounce_Key << 10)) == 0)
     {
-        /* Button is pressed */
-        down = 1;
+        /* Handle pedestrian request */
+        Handle_Req();
     }
     else
     {
         /* Button has been released */
-        if (down == 1)
-        {
-            /* Handle pedestrian request */
-            Handle_Req();
+        if (Debounce_Key == BUTTON_INT0)
+        {            
+            /* Reset the play timer */
+            Timer_Reset(TIMER2);
             
-            /* Stop playing */
-            if (Debounce_Key == BUTTON_INT0)
-            {
-                /* Reset the play timer */
-                Timer_Reset(TIMER2);
-                
-                /* Reset the DAC output */
-                DAC_Out(0);
-            }
+            /* Reset the DAC output */
+            DAC_Out(0);
         }
-        
-        /* Button is not pressed */
-        down = 0;
         
         /* Disable and reset the RIT */
         RIT_Disable();
