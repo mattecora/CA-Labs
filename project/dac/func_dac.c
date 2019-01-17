@@ -30,11 +30,8 @@ void DAC_Out(uint16_t dac_val)
 
 void DAC_Play(void)
 {
-    /* Compute the scaled sample */
-    float scaled_samp = (float)Sin_Wave[Sample_Num] * DAC_Volume/VOL_MAX;
-    
     /* Output the scaled sample */
-    DAC_Out((uint16_t)scaled_samp);
+    DAC_Out(Sin_Wave[Sample_Num] * DAC_Volume/VOL_MAX);
     
     /* Compute next sample */
     Sample_Num = (Sample_Num + 1) % 64;
