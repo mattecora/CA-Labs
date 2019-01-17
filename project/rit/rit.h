@@ -14,8 +14,6 @@
 
 /*--------- RIT defines ----------------------------------------------------*/
 
-#define     DEBUG
-
 #ifdef      DEBUG
 #define     TIME_50MS       0x0001E848              /* Divided by 10        */
 #else

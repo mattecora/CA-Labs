@@ -41,6 +41,9 @@ void RIT_Debounce(uint8_t key)
     /* Set the key to debounce */
     Debounce_Key |= key;
     
+    /* Reset the RIT to ensure 50ms wait */
+    RIT_Reset();
+    
     /* Start the RIT */
     RIT_Enable();
 }

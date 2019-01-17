@@ -49,20 +49,23 @@ void Run_State1(void)
     /* Reset the blinking timer */
     Timer_Reset(TIMER1);
     
-    /* Reset the play timer */
-    Timer_Reset(TIMER2);
-    
     /* Reset the maintenance timer */
     Timer_Reset(TIMER3);
     
-    /* Reset the DAC output */
-    DAC_Out(0);
-    
     /* Set the current state */
     Current_State = STATE_RFG;
+    
+    if (Blind_State == BLIND)
+    {
+        /* Play the first sample */
+        DAC_Play();
+        
+        /* Start the play timer */
+        Timer_Start(TIMER2);
+    }
 
     /* Set the semaphore lights */
-    LED_Out(CAR_RED);
+    LED_Out(CAR_RED | PED_GREEN);
 
     /* Setup main timer to match on 5s */
     Timer_SetMCR(TIMER0, TIMER_MATCH0, TIMER_NOP);
@@ -134,15 +137,11 @@ void Run_Maint(void)
     /* Set the semaphore lights */
     LED_Out(CAR_YELLOW | PED_RED);
     
-    /* Start playing if not blind */
-    if (Blind_State == NO_BLIND)
-    {
-        /* Play first sample */
-        DAC_Play();
-        
-        /* Start the play timer */
-        Timer_Start(TIMER2);
-    }
+    /* Play first sample */
+    DAC_Play();
+    
+    /* Start the play timer */
+    Timer_Start(TIMER2);
     
     /* Start ADC conversion */
     ADC_Start();
