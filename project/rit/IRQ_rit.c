@@ -72,6 +72,12 @@ void RIT_IRQHandler(void)
                     
                     /* Reset the DAC output */
                     DAC_Out(0);
+                    
+                    /* Reset the blinking timer */
+                    Timer_Reset(TIMER1);
+                    
+                    /* Start the blinking timer */
+                    Timer_Start(TIMER1);
                 }
                 
                 /* Remove from the debounce keys */

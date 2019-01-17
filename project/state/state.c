@@ -126,6 +126,9 @@ void Run_Maint(void)
     /* Reset the main timer */
     Timer_Reset(TIMER0);
     
+    /* Reset the blinking timer */
+    Timer_Reset(TIMER1);
+    
     /* Disable interrupts from buttons */
     NVIC_DisableIRQ(EINT0_IRQn);
     NVIC_DisableIRQ(EINT1_IRQn);
@@ -142,6 +145,9 @@ void Run_Maint(void)
     
     /* Start the play timer */
     Timer_Start(TIMER2);
+    
+    /* Start the blinking timer */
+    Timer_Start(TIMER1);
     
     /* Start ADC conversion */
     ADC_Start();
