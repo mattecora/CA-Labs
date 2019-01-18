@@ -24,12 +24,12 @@ void Run_State0(void)
     LED_Out(CAR_RED | PED_GREEN);
 
     /* Setup main timer to match on 15s */
-    Timer_SetMCR(TIMER0, TIMER_MATCH0, TIMER_IRS);
-    Timer_SetMCR(TIMER0, TIMER_MATCH1, TIMER_NOP);
+    Timer_SetMatch(TIMER0, TIMER_MATCH0, TIMER_IRS);
+    Timer_SetMatch(TIMER0, TIMER_MATCH1, TIMER_NOP);
     
     /* Setup blinking timer to match on 1s */
-    Timer_SetMCR(TIMER1, TIMER_MATCH0, TIMER_INT | TIMER_RST);
-    Timer_SetMCR(TIMER1, TIMER_MATCH1, TIMER_NOP);
+    Timer_SetMatch(TIMER1, TIMER_MATCH0, TIMER_INT | TIMER_RST);
+    Timer_SetMatch(TIMER1, TIMER_MATCH1, TIMER_NOP);
     
     /* Start the main timer */
     Timer_Start(TIMER0);
@@ -68,12 +68,12 @@ void Run_State1(void)
     LED_Out(CAR_RED | PED_GREEN);
 
     /* Setup main timer to match on 5s */
-    Timer_SetMCR(TIMER0, TIMER_MATCH0, TIMER_NOP);
-    Timer_SetMCR(TIMER0, TIMER_MATCH1, TIMER_IRS);
+    Timer_SetMatch(TIMER0, TIMER_MATCH0, TIMER_NOP);
+    Timer_SetMatch(TIMER0, TIMER_MATCH1, TIMER_IRS);
     
     /* Setup blinking timer to match on 0.5s */
-    Timer_SetMCR(TIMER1, TIMER_MATCH0, TIMER_NOP);
-    Timer_SetMCR(TIMER1, TIMER_MATCH1, TIMER_INT | TIMER_RST);
+    Timer_SetMatch(TIMER1, TIMER_MATCH0, TIMER_NOP);
+    Timer_SetMatch(TIMER1, TIMER_MATCH1, TIMER_INT | TIMER_RST);
     
     /* Start the main timer */
     Timer_Start(TIMER0);

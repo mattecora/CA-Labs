@@ -60,12 +60,9 @@ void        Timer_Init(uint8_t timer_num,
                        uint8_t match_reg,
                        uint32_t timer_interval,
                        uint8_t timer_behavior);     /* Initialize a timer   */
-void        Timer_SetMR(uint8_t timer_num,
-                        uint8_t match_reg,
-                        uint32_t timer_interval);   /* Set a timer MR       */
-void        Timer_SetMCR(uint8_t timer_num,
-                         uint8_t match_reg,
-                         uint8_t timer_behavior);   /* Set a timer MCR      */
+void        Timer_SetMatch(uint8_t timer_num,
+                           uint8_t match_reg,
+                           uint8_t timer_behavior); /* Set match behavior   */
 void        Timer_Start(uint8_t timer_num);         /* Start a timer        */
 void        Timer_Stop(uint8_t timer_num);          /* Stop a timer         */
 void        Timer_Reset(uint8_t timer_num);         /* Reset a timer        */

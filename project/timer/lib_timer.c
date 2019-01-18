@@ -15,22 +15,16 @@ void Timer_Init(uint8_t timer_num, uint8_t match_reg, uint32_t timer_interval, u
     }
     
     /* Set the match register */
-    Timer_SetMR(timer_num, match_reg, timer_interval);
+    (&(LPC_TIM[timer_num]->MR0))[match_reg] = timer_interval;
 
     /* Set the match control register */
-    Timer_SetMCR(timer_num, match_reg, timer_behavior);
+    LPC_TIM[timer_num]->MCR = timer_behavior << 3 * match_reg;
 
     /* Enable the interrupt handler */
     NVIC_EnableIRQ(TIMER_IRQn[timer_num]);
 }
 
-void Timer_SetMR(uint8_t timer_num, uint8_t match_reg, uint32_t timer_interval)
-{
-    /* Set the match register */
-    (&(LPC_TIM[timer_num]->MR0))[match_reg] = timer_interval;
-}
-
-void Timer_SetMCR(uint8_t timer_num, uint8_t match_reg, uint8_t timer_behavior)
+void Timer_SetMatch(uint8_t timer_num, uint8_t match_reg, uint8_t timer_behavior)
 {
     /* Clear bits in the match control register */
     LPC_TIM[timer_num]->MCR &= ~(TIMER_IRS << 3 * match_reg);
