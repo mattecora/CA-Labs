@@ -54,7 +54,10 @@ void Run_State1(void)
     
     /* Set the current state */
     Current_State = STATE_RFG;
-    
+
+    /* Set the semaphore lights */
+    LED_Out(CAR_RED | PED_GREEN);
+
     if (Blind_State == BLIND)
     {
         /* Play the first sample */
@@ -63,9 +66,6 @@ void Run_State1(void)
         /* Start the play timer */
         Timer_Start(TIMER2);
     }
-
-    /* Set the semaphore lights */
-    LED_Out(CAR_RED | PED_GREEN);
 
     /* Setup main timer to match on 5s */
     Timer_SetMatch(TIMER0, TIMER_MATCH0, TIMER_NOP);
