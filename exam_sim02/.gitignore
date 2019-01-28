@@ -1,0 +1,14 @@
+*
+!.gitignore
+!*.s
+!*.uvproj
+!*.c
+!*.h
+!*.pdf
+!joystick/
+!led/
+!main/
+!overflow/
+!rit/
+!system/
+!timer/
